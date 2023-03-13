@@ -64,7 +64,9 @@ void raytracer() {
 			FreeImage_SetPixelColor(bitmap, i, j, &color);
 		}
 	}
-	FreeImage_Save(FIF_PNG, bitmap, "test.png", 0);
+	input_filename = input_filename.replace(input_filename.find(".test"), input_filename.size(), ".png");
+	//fprintf(stderr, input_filename.c_str());
+	FreeImage_Save(FIF_PNG, bitmap, input_filename.c_str(), 0);
 	FreeImage_DeInitialise();
 }
 

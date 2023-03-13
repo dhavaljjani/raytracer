@@ -17,6 +17,7 @@ EXTERN float fovx;
 EXTERN stack<mat4> transfstack;
 EXTERN vector<Sphere> spheres;
 EXTERN vector<Triangle> triangles;
+EXTERN string input_filename;
 EXTERN string output_filename;
 
 EXTERN int ambient[3];

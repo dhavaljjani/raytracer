@@ -152,6 +152,7 @@ void readfile(const char* filename)
         // I need to implement a matrix stack to store transforms.  
         // This is done using standard STL Templates 
         transfstack.push(mat4(1.0));
+        input_filename = filename;
         attenuation = vec3(1, 0, 0);
         getline (in, str); 
         while (in) {
