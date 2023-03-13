@@ -18,7 +18,7 @@ float Sphere::findIntersection(vec3 p0, vec3 p1) {
     float B = 2 * dot(p1, p0 - center);
     float C = dot(p0 - center, p0 - center) - (r * r);
 
-    float discriminant = (B * B) - (4.0 * A * C);
+    float discriminant = sqrtf((B * B) - (4.0 * A * C));
     //fprintf(stderr, "A:[%f], B:[%f], C:[%f]\n", A, B, C);
     //fprintf(stderr, "DOS: [%f]\n", discriminant);
 
@@ -256,7 +256,9 @@ void readfile(const char* filename)
                         upinit = vec3(values[6], values[7], values[8]);
                         fovy = values[9];
                         upinit = Transform::upvector(upinit, eyeinit - centerinit);
-                        fovx = 2.0 * atan(tan((float)(fovy / 2.0)) * ((width) / (height)));
+                        float fovy_radians = fovy * (pi / float(180.0));
+                        float aspect = (float)((width) / (height));
+                        fovx = (float)(2.0) * (float(180.0) / pi) * atan(tan(fovy_radians) * aspect);
                     }
                 }
 

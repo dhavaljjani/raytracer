@@ -12,7 +12,8 @@ void raytracer() {
 	fprintf(stderr, "Camera: %f %f %f %f %f %f %f %f %f %f\n", eyeinit[0], eyeinit[1], eyeinit[2],
 		centerinit[0], centerinit[1], centerinit[2], upinit[0], upinit[1], upinit[2], fovy);
 
-	fprintf(stderr, "NUM SPHERES:[%i], NUM TRIANGLES:[%i]\n", spheres.size(), triangles.size());*/
+	fprintf(stderr, "NUM SPHERES:[%i], NUM TRIANGLES:[%i]\n", spheres.size(), triangles.size());
+	fprintf(stderr, "FOVX: %f\n", fovx);*/
 
 	for (int i = 0; i < height; i++) {
 		for (int j = 0; j < width; j++) {
@@ -74,10 +75,13 @@ vec3 RayThruPixel(vec3 a, vec3 b, float i, float j) {
 	vec3 w = normalize(a);
 	vec3 u = normalize(cross(b, w));
 	vec3 v = cross(w, u);
-	float halfHeight = (float)height / 2.0;
-	float halfWidth = (float)width / 2.0;
-	float alpha = tan(fovx / 2) * (((float)j - halfWidth) / (float)halfWidth);
-	float beta = tan(fovy / 2) * (((float)halfHeight - i) / (float)halfHeight);
+	float halfHeight = (float)(height / ((float)2.0));
+	float halfWidth = (float)(width / ((float)2.0));
+	float fovx_radians = fovx * (pi / float(180.0));
+	float fovy_radians = fovy * (pi / float(180.0));
+	//fprintf(stderr, "FOVX: [%f], FOVY: [%f]\n", fovx_radians, fovy_radians);
+	float alpha = tan(fovx_radians / float(2.0)) * (((float)j - halfWidth) / (float)halfWidth);
+	float beta = tan(fovy_radians / float(2.0)) * (((float)halfHeight - i) / (float)halfHeight);
 
 	vec3 p1 = (alpha * u) + (beta * v) - w;
 

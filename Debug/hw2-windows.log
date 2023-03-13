@@ -1,37 +1,9 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(517,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (hw2-windows.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  main.cpp
   raytracer.cpp
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(51,20): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(52,22): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(53,21): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(56,20): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(57,22): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(58,21): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(77,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(78,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  readfile.cpp
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\readfile.cpp(21,24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\readfile.cpp(27,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\readfile.cpp(28,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\readfile.cpp(110,53): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\readfile.cpp(216,50): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\readfile.cpp(223,50): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\readfile.cpp(230,51): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\readfile.cpp(237,51): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\readfile.cpp(243,45): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\readfile.cpp(259,36): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\readfile.cpp(286,64): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\readfile.cpp(286,85): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\readfile.cpp(286,106): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\readfile.cpp(327,51): warning C4244: 'argument': conversion from 'float' to 'const _Elem', possible loss of data
-          with
-          [
-              _Elem=char
-          ]
-  Transform.cpp
-  Generating Code...
+C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(52,20): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(53,22): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(54,21): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(57,20): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(58,22): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(59,21): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
   hw2-windows.vcxproj -> C:\Users\dhava\Documents\raytracer\hw2-windows\Debug\raytracer.exe
