@@ -19,8 +19,10 @@ EXTERN vector<Sphere> spheres;
 EXTERN vector<Triangle> triangles;
 EXTERN string input_filename;
 EXTERN string output_filename;
+EXTERN mat4 modelview;
+EXTERN int max_verts;
 
-EXTERN int ambient[3];
+EXTERN float ambient[3];
 EXTERN int diffuse[3];
 EXTERN int emission[3];
 EXTERN int specular[3];

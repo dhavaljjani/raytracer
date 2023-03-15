@@ -10,9 +10,11 @@ class Sphere {
     public:
         vec3 center;
         float r;
+        float color_ambient[3] = {0, 0, 0};
         Sphere(vec3 center, float r);
 
     float findIntersection(vec3 p0, vec3 p1);
+    void setColorAmbient(float a, float b, float c);
 };
 
 class Triangle {
@@ -20,9 +22,11 @@ class Triangle {
         vec3 A;
         vec3 B;
         vec3 C;
+        float color_ambient[3] = { 0, 0, 0 };
         Triangle(vec3 A, vec3 B, vec3 C);
 
-        float findIntersection(vec3 p0, vec3 p1);
+    float findIntersection(vec3 p0, vec3 p1);
+    void setColorAmbient(float a, float b, float c);
 };
 
 class Light {
@@ -36,5 +40,5 @@ class Light {
 
 void matransform (stack<mat4> &transfstack, int values[]);
 void rightmultiply (const mat4 & M, stack<mat4> &transfstack) ;
-bool readvals (stringstream &s, const int numvals, int values[]);
+bool readvals (stringstream &s, const int numvals, float values[]);
 void readfile (const char * filename) ;

@@ -11,6 +11,12 @@ Sphere::Sphere(vec3 center, float r) {
     this->r = r;
 }
 
+void Sphere::setColorAmbient(float a, float b, float c) {
+    this->color_ambient[0] = a;
+    this->color_ambient[1] = b;
+    this->color_ambient[2] = c;
+}
+
 float Sphere::findIntersection(vec3 p0, vec3 p1) {
 
     float A = glm::dot(p1, p1);
@@ -18,18 +24,18 @@ float Sphere::findIntersection(vec3 p0, vec3 p1) {
     float B = 2 * dot(p1, p0 - center);
     float C = dot(p0 - center, p0 - center) - (r * r);
 
-    float discriminant = sqrtf((B * B) - (4.0 * A * C));
+    float discriminant = sqrtf((B * B) - ((float)(4.0) * A * C));
     //fprintf(stderr, "A:[%f], B:[%f], C:[%f]\n", A, B, C);
     //fprintf(stderr, "DOS: [%f]\n", discriminant);
 
     if (discriminant < 0) return -1;//case where there is no intersection
 
-    float intOne = (-B - discriminant) / (2.0 * A);
-    float intTwo = (-B + discriminant) / (2.0 * A);
+    float intOne = (-B - discriminant) / ((float)(2.0) * A);
+    float intTwo = (-B + discriminant) / ((float)(2.0) * A);
     //fprintf(stderr, "1:[%f], 2:[%f]\n", intOne, intTwo);
 
     if (intOne > 0 && intTwo > 0) {
-        return intOne;
+        return min(intOne, intTwo);
     }
     else if (intOne < 0 && intTwo > 0) {
         return intTwo;
@@ -63,6 +69,12 @@ Triangle::Triangle(vec3 A, vec3 B, vec3 C) {
     this->A = A;
     this->B = B;
     this->C = C;
+}
+
+void Triangle::setColorAmbient(float a, float b, float c) {
+    this->color_ambient[0] = a;
+    this->color_ambient[1] = b;
+    this->color_ambient[2] = c;
 }
 
 float Triangle::findIntersection(vec3 p0, vec3 p1) {
@@ -118,7 +130,7 @@ void rightmultiply(const mat4 & M, stack<mat4> &transfstack)
 
 // Function to read the input data values
 // Use is optional, but should be very helpful in parsing.  
-bool readvals(stringstream &s, const int numvals, int values[])
+bool readvalsInt(stringstream &s, const int numvals, int values[])
 {
     for (int i = 0; i < numvals; i++) {
         s >> values[i]; 
@@ -243,7 +255,7 @@ void readfile(const char* filename)
                         shininess = values[0]; 
                     }
                 } else if (cmd == "size") {
-                    validinput = readvals(s,2, size_values);
+                    validinput = readvalsInt(s,2, size_values);
                     if (validinput) { 
                         width = (int)size_values[0];
                         height = (int)size_values[1];
@@ -259,6 +271,8 @@ void readfile(const char* filename)
                         float fovy_radians = fovy * (pi / float(180.0));
                         float aspect = (float)((width) / (height));
                         fovx = (float)(2.0) * (float(180.0) / pi) * atan(tan(fovy_radians) * aspect);
+                        modelview = Transform::lookAt(eyeinit, centerinit, upinit);
+                        transfstack.push(modelview);
                     }
                 }
 
@@ -273,22 +287,42 @@ void readfile(const char* filename)
                         for (i = 0; i < 3; i++) {
                             vertex[i] = values[i];
                         }
+                        vec4 vertex_vec = vec4(vertex[0], vertex[1], vertex[2], 1.0);
+                        vertex_vec = vertex_vec * modelview;
+                        /*for (int i = 0; i < 3; i++) {
+                            vertex[i] = vertex_vec[i];
+                        }*/
                         vertices.push_back(vertex);
                     }
                     else if (cmd == "sphere") {
                         validinput = readvals(s, 4, values);
-                        for (i = 0; i < 3; i++) {
-                            sphere_center[i] = values[i];
+                        if (validinput) {
+                            for (i = 0; i < 3; i++) {
+                                sphere_center[i] = values[i];
+                            }
+                            Sphere s = Sphere(sphere_center, values[3]);
+                            s.setColorAmbient(ambient[0], ambient[1], ambient[2]);
+                            vec4 sphere_vec = vec4(s.center[0], s.center[1], s.center[2], 1.0);
+                            sphere_vec = sphere_vec * modelview;
+                            /*for (int i = 0; i < 3; i++) {
+                                s.center[i] = sphere_vec[i];
+                            }*/
+                            spheres.push_back(s);
                         }
-                        Sphere s = Sphere(sphere_center, values[3]);
-                        spheres.push_back(s);
                     }
                     else if (cmd == "tri") {
                         validinput = readvals(s, 3, values);
-                        Triangle t = Triangle(vertices[values[0]], vertices[values[1]], vertices[values[2]]);
-                        triangles.push_back(t);
+                        if (validinput) {
+                            Triangle t = Triangle(vertices[values[0]], vertices[values[1]], vertices[values[2]]);
+                            //fprintf(stderr, "vals: [%i][%i][%i]\n", ambient[0], ambient[1], ambient[2]);
+                            t.setColorAmbient(ambient[0], ambient[1], ambient[2]);
+                            triangles.push_back(t);
+                        }
                     }
-                    else if (cmd == "vertexnormal" || cmd == "maxverts" || cmd == "maxvertsnorms" || cmd == "vertexnormal") {
+                    else if (cmd == "maxverts") {
+                        validinput = readvals(s, 1, values);
+                        max_verts = values[0];
+                    } else if (cmd == "vertexnormal" || cmd == "maxvertsnorms" || cmd == "vertexnormal") {
                         //Nothing
                     }
                 }
