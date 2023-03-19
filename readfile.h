@@ -8,10 +8,10 @@ using namespace std;
 
 class Sphere {
     public:
-        vec3 center;
+        vec3 sphere_center;
         float r;
         float color_ambient[3] = {0, 0, 0};
-        Sphere(vec3 center, float r);
+        Sphere(vec3 center_input, float r);
 
     float findIntersection(vec3 p0, vec3 p1);
     void setColorAmbient(float a, float b, float c);

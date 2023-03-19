@@ -6,8 +6,8 @@
 #include "variables.h"
 using namespace std;
 
-Sphere::Sphere(vec3 center, float r) {
-    this->center = center;
+Sphere::Sphere(vec3 center_input, float r) {
+    sphere_center = center_input;
     this->r = r;
 }
 
@@ -21,14 +21,15 @@ float Sphere::findIntersection(vec3 p0, vec3 p1) {
 
     float A = glm::dot(p1, p1);
     //Is this meant to be center or centerinit?
-    float B = 2 * dot(p1, p0 - center);
-    float C = dot(p0 - center, p0 - center) - (r * r);
+    float B = 2 * dot(p1, p0 - sphere_center);
+    float C = dot(p0 - sphere_center, p0 - sphere_center) - (r * r);
 
-    float discriminant = sqrtf((B * B) - ((float)(4.0) * A * C));
+    float discriminant = ((B * B) - ((float)(4.0) * A * C));
+    if (discriminant < 0) return -1;
+
+    discriminant = sqrt(discriminant);
     //fprintf(stderr, "A:[%f], B:[%f], C:[%f]\n", A, B, C);
     //fprintf(stderr, "DOS: [%f]\n", discriminant);
-
-    if (discriminant < 0) return -1;//case where there is no intersection
 
     float intOne = (-B - discriminant) / ((float)(2.0) * A);
     float intTwo = (-B + discriminant) / ((float)(2.0) * A);
@@ -289,9 +290,9 @@ void readfile(const char* filename)
                         }
                         vec4 vertex_vec = vec4(vertex[0], vertex[1], vertex[2], 1.0);
                         vertex_vec = vertex_vec * modelview;
-                        /*for (int i = 0; i < 3; i++) {
+                        for (int i = 0; i < 3; i++) {
                             vertex[i] = vertex_vec[i];
-                        }*/
+                        }
                         vertices.push_back(vertex);
                     }
                     else if (cmd == "sphere") {
@@ -302,11 +303,12 @@ void readfile(const char* filename)
                             }
                             Sphere s = Sphere(sphere_center, values[3]);
                             s.setColorAmbient(ambient[0], ambient[1], ambient[2]);
-                            vec4 sphere_vec = vec4(s.center[0], s.center[1], s.center[2], 1.0);
+                            vec4 sphere_vec = vec4(s.sphere_center[0], s.sphere_center[1], s.sphere_center[2], 1.0);
                             sphere_vec = sphere_vec * modelview;
-                            /*for (int i = 0; i < 3; i++) {
-                                s.center[i] = sphere_vec[i];
-                            }*/
+                            //s.sphere_center = s.sphere_center * modelview;
+                            for (int i = 0; i < 3; i++) {
+                                s.sphere_center[i] = sphere_vec[i];
+                            }
                             spheres.push_back(s);
                         }
                     }

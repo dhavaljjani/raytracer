@@ -30,7 +30,7 @@ void raytracer() {
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
 
-			vec3 ray = RayThruPixel(eyeinit - centerinit, upinit, (float)(i + 0.5), (float)(j + 0.5));
+			vec3 ray = RayThruPixel(eyeinit-centerinit, upinit, (float)(i + 0.5), (float)(j + 0.5));
 			float currentMin = 1000000.0;
 
 			int type = 0; //0 if no intersect, 1 if sphere, 2 if triangle
@@ -102,7 +102,7 @@ vec3 RayThruPixel(vec3 a, vec3 b, float i, float j) {
 	float fovx_radians = fovx * (pi / float(180.0));
 	float fovy_radians = fovy * (pi / float(180.0));
 	//fprintf(stderr, "FOVX: [%f], FOVY: [%f]\n", fovx_radians, fovy_radians);
-	float alpha = tan(fovx_radians / float(2.0)) * (((float)(j) - halfWidth) / (float)halfWidth);
+	float alpha = tan(fovx_radians / float(2.0)) * (((j) - halfWidth) / halfWidth);
 	float beta = tan(fovy_radians / float(2.0)) * (((float)halfHeight - (float)(i)) / (float)halfHeight);
 
 	//fprintf(stderr, "Alpha: [%f], Beta: [%f]\n", alpha, beta);
