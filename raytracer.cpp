@@ -26,9 +26,10 @@ void raytracer() {
 	for (float i = 0; i < width; i++) {
 		for (float j = 0; j < height; j++) {
 
-			vec3 ray = RayThruPixel(eyeinit - centerinit, upinit, ((float)i + (float)0.5), ((float)j + (float)0.5));
-			ray = normalize(ray);
+	for (int i = 0; i < width; i++) {
+		for (int j = 0; j < height; j++) {
 
+			vec3 ray = RayThruPixel(eyeinit - centerinit, upinit, (float)(i + 0.5), (float)(j + 0.5));
 			float currentMin = 1000000.0;
 
 			int type = 0; //0 if no intersect, 1 if sphere, 2 if triangle
@@ -66,14 +67,14 @@ void raytracer() {
 			if (type == 1) {
 				//fprintf(stderr, "HITTING A SPHERE\n");
 				//set the color to the color of the triangle
-				color.rgbRed = current_ambient[0] * (float)255.0;
-				color.rgbGreen = current_ambient[1] * (float)255.0;
-				color.rgbBlue = current_ambient[2] * (float)255.0;
+				color.rgbRed = current_ambient[0] * 255.0;
+				color.rgbGreen = current_ambient[1] * 255.0;
+				color.rgbBlue = current_ambient[2] * 255.0;
 			} else if (type == 2){
 				//fprintf(stderr, "HITTING A TRIANGLE\n");
-				color.rgbRed = current_ambient[0] * (float)255.0;
-				color.rgbGreen = current_ambient[1] * (float)255.0;
-				color.rgbBlue = current_ambient[2] * (float)255.0;
+				color.rgbRed = current_ambient[0] * 255.0;
+				color.rgbGreen = current_ambient[1] * 255.0;
+				color.rgbBlue = current_ambient[2] * 255.0;
 			}
 			else if (type == 0) {
 				//fprintf(stderr, "HITTING NOTHING\n");
@@ -100,7 +101,7 @@ vec3 RayThruPixel(vec3 a, vec3 b, float i, float j) {
 	float fovx_radians = fovx * (pi / float(180.0));
 	float fovy_radians = fovy * (pi / float(180.0));
 	//fprintf(stderr, "FOVX: [%f], FOVY: [%f]\n", fovx_radians, fovy_radians);
-	float alpha = tan(fovx_radians / float(2.0)) * (((float)(j) - halfWidth) / (float)halfWidth);
+	float alpha = tan(fovx_radians / float(2.0)) * (((j) - halfWidth) / halfWidth);
 	float beta = tan(fovy_radians / float(2.0)) * (((float)halfHeight - (float)(i)) / (float)halfHeight);
 
 	//fprintf(stderr, "Alpha: [%f], Beta: [%f]\n", alpha, beta);
