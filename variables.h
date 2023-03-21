@@ -23,12 +23,12 @@ EXTERN mat4 modelview;
 EXTERN int max_verts;
 
 EXTERN float ambient[3];
-EXTERN int diffuse[3];
-EXTERN int emission[3];
-EXTERN int specular[3];
-EXTERN int shininess;
-EXTERN int width;
-EXTERN int height;
+EXTERN float diffuse[3];
+EXTERN float emission[3];
+EXTERN float specular[3];
+EXTERN float shininess;
+EXTERN float width;
+EXTERN float height;
 EXTERN int max_depth;
 EXTERN vec3 sphere_center;
 EXTERN vector<vec3> vertices;

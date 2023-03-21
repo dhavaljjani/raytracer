@@ -3,7 +3,6 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-#include <deque>
 #include <stack>
 #include <FreeImage.h>
 #include "variables.h"

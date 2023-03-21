@@ -7,13 +7,10 @@ void raytracer() {
 	RGBQUAD color;
 
 	//PRINTING STUFF
-	/*fprintf(stderr, "Width: %i, Height: %i\n", width, height);
+	/*fprintf(stderr, "Width: %f, Height: %f\n", width, height);
 	fprintf(stderr, "NUM SPHERES:[%i], NUM TRIANGLES:[%i]\n", spheres.size(), triangles.size());
 	fprintf(stderr, "Fovy: %f\n", fovy);
 	fprintf(stderr, "Fovx: %f\n", fovx);
-	fprintf(stderr, "EyeInit[%f, %f, %f]\n", eyeinit[0], eyeinit[1], eyeinit[2]);
-	fprintf(stderr, "CenterInit[%f, %f, %f]\n", centerinit[0], centerinit[1], centerinit[2]);
-	fprintf(stderr, "UpInit[%f, %f, %f]\n", upinit[0], upinit[1], upinit[2]);
 	for (int k = 0; k < max_verts; k++) {
 		fprintf(stderr, "Vertex %i: [%f, %f, %f]\n", k, vertices[k][0], vertices[k][1], vertices[k][2]);
 	}
@@ -26,17 +23,18 @@ void raytracer() {
 			triangles[k].B[0], triangles[k].B[1], triangles[k].B[2], triangles[k].C[0], triangles[k].C[1], triangles[k].C[2]);
 	}*/
 
+	for (float i = 0; i < width; i++) {
+		for (float j = 0; j < height; j++) {
 
-	for (int i = 0; i < width; i++) {
-		for (int j = 0; j < height; j++) {
+			vec3 ray = RayThruPixel(eyeinit - centerinit, upinit, ((float)i + (float)0.5), ((float)j + (float)0.5));
+			ray = normalize(ray);
 
-			vec3 ray = RayThruPixel(eyeinit - centerinit, upinit, (float)(i + 0.5), (float)(j + 0.5));
 			float currentMin = 1000000.0;
 
 			int type = 0; //0 if no intersect, 1 if sphere, 2 if triangle
 			float current_ambient[3];
 			for (int k = 0; k < spheres.size(); k++) {
-				float t = spheres[k].findIntersection(centerinit, ray);
+				float t = spheres[k].findIntersection(eyeinit - centerinit, ray);
 				//if (t < 0) continue;
 				if (t < currentMin && t > 0) {
 					current_ambient[0] = spheres[k].color_ambient[0];
@@ -48,7 +46,7 @@ void raytracer() {
 			}
 
 			for (int k = 0; k < triangles.size(); k++) {
-				float t = triangles[k].findIntersection(centerinit, ray);
+				float t = triangles[k].findIntersection(eyeinit - centerinit, ray);
 				//if (t < 0) continue;
 				if (t < currentMin && t > 0) {
 					current_ambient[0] = triangles[k].color_ambient[0];
@@ -61,27 +59,27 @@ void raytracer() {
 
 			if (currentMin < 0) {
 				//set color for the image to be the ambient color
-				color.rgbRed = ambient[0] * 255.0;
-				color.rgbGreen = ambient[1] * 255.0;
-				color.rgbBlue = ambient[2] * 255.0;
+				color.rgbRed = ambient[0] * (float)255.0;
+				color.rgbGreen = ambient[1] * (float)255.0;
+				color.rgbBlue = ambient[2] * (float)255.0;
 			}
 			if (type == 1) {
 				//fprintf(stderr, "HITTING A SPHERE\n");
 				//set the color to the color of the triangle
-				color.rgbRed = current_ambient[0] * 255.0;
-				color.rgbGreen = current_ambient[1] * 255.0;
-				color.rgbBlue = current_ambient[2] * 255.0;
+				color.rgbRed = current_ambient[0] * (float)255.0;
+				color.rgbGreen = current_ambient[1] * (float)255.0;
+				color.rgbBlue = current_ambient[2] * (float)255.0;
 			} else if (type == 2){
 				//fprintf(stderr, "HITTING A TRIANGLE\n");
-				color.rgbRed = current_ambient[0] * 255.0;
-				color.rgbGreen = current_ambient[1] * 255.0;
-				color.rgbBlue = current_ambient[2] * 255.0;
+				color.rgbRed = current_ambient[0] * (float)255.0;
+				color.rgbGreen = current_ambient[1] * (float)255.0;
+				color.rgbBlue = current_ambient[2] * (float)255.0;
 			}
 			else if (type == 0) {
 				//fprintf(stderr, "HITTING NOTHING\n");
-				color.rgbRed = ambient[0] * 255.0;
-				color.rgbGreen = ambient[1] * 255.0;
-				color.rgbBlue = ambient[2] * 255.0;
+				color.rgbRed = 0;
+				color.rgbGreen = 0;
+				color.rgbBlue = 0;
 			}
 
 			FreeImage_SetPixelColor(bitmap, i, j, &color);
@@ -106,7 +104,7 @@ vec3 RayThruPixel(vec3 a, vec3 b, float i, float j) {
 	float beta = tan(fovy_radians / float(2.0)) * (((float)halfHeight - (float)(i)) / (float)halfHeight);
 
 	//fprintf(stderr, "Alpha: [%f], Beta: [%f]\n", alpha, beta);
-	vec3 p1 = normalize((alpha * u) + (beta * v) - w);
+	vec3 p1 = (alpha * u) + (beta * v) - w;
 
 	return p1;
 }

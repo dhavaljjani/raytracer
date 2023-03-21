@@ -20,7 +20,6 @@ void Sphere::setColorAmbient(float a, float b, float c) {
 float Sphere::findIntersection(vec3 p0, vec3 p1) {
 
     float A = glm::dot(p1, p1);
-    //Is this meant to be center or centerinit?
     float B = 2 * dot(p1, p0 - center);
     float C = dot(p0 - center, p0 - center) - (r * r);
 
@@ -43,7 +42,9 @@ float Sphere::findIntersection(vec3 p0, vec3 p1) {
     else if (intOne == intTwo) {
         return intOne;
     }
-    else {
+    else if (intOne > 0 && intTwo < 0) {
+        return intOne;
+    } else {
         return -1;
     }
 
@@ -130,18 +131,6 @@ void rightmultiply(const mat4 & M, stack<mat4> &transfstack)
 
 // Function to read the input data values
 // Use is optional, but should be very helpful in parsing.  
-bool readvalsInt(stringstream &s, const int numvals, int values[])
-{
-    for (int i = 0; i < numvals; i++) {
-        s >> values[i]; 
-        if (s.fail()) {
-            cout << "Failed reading value " << i << " will skip\n"; 
-            return false;
-        }
-    }
-    return true; 
-}
-
 bool readvals(stringstream& s, const int numvals, float values[])
 {
     for (int i = 0; i < numvals; i++) {
@@ -154,11 +143,11 @@ bool readvals(stringstream& s, const int numvals, float values[])
     return true;
 }
 
-void readfile(const char* filename) 
+void readfile(const char* filename)
 {
-    string str, cmd; 
+    string str, cmd;
     ifstream in;
-    in.open(filename); 
+    in.open(filename);
     if (in.is_open()) {
 
         // I need to implement a matrix stack to store transforms.  
@@ -166,13 +155,12 @@ void readfile(const char* filename)
         transfstack.push(mat4(1.0));
         input_filename = filename;
         attenuation = vec3(1, 0, 0);
-        getline (in, str); 
+        getline(in, str);
         while (in) {
             if ((str.find_first_not_of(" \t\r\n") != string::npos) && (str[0] != '#')) {
                 stringstream s(str);
-                s >> cmd; 
+                s >> cmd;
                 int i;
-                int size_values[2];
                 float values[10];
                 bool validinput; // Validity of input 
                 //fprintf(stderr, "COMMAND: %s\n", cmd);
@@ -207,7 +195,7 @@ void readfile(const char* filename)
                     }
                 }
                 else if (cmd == "attenuation") {
-                    validinput = readvals(s, 3, values); 
+                    validinput = readvals(s, 3, values);
                     if (validinput) {
                         for (int i = 0; i < 3; i++) {
                             attenuation[i] = values[i];
@@ -225,54 +213,60 @@ void readfile(const char* filename)
                     validinput = readvals(s, 3, values); // colors 
                     if (validinput) {
                         for (i = 0; i < 3; i++) {
-                            ambient[i] = values[i]; 
+                            ambient[i] = values[i];
                         }
                     }
-                } else if (cmd == "diffuse") {
-                    validinput = readvals(s, 3, values); 
+                }
+                else if (cmd == "diffuse") {
+                    validinput = readvals(s, 3, values);
                     if (validinput) {
                         for (i = 0; i < 3; i++) {
-                            diffuse[i] = values[i]; 
+                            diffuse[i] = values[i];
                         }
                     }
-                } else if (cmd == "specular") {
-                    validinput = readvals(s, 3, values); 
+                }
+                else if (cmd == "specular") {
+                    validinput = readvals(s, 3, values);
                     if (validinput) {
                         for (i = 0; i < 3; i++) {
-                            specular[i] = values[i]; 
+                            specular[i] = values[i];
                         }
                     }
-                } else if (cmd == "emission") {
-                    validinput = readvals(s, 3, values); 
+                }
+                else if (cmd == "emission") {
+                    validinput = readvals(s, 3, values);
                     if (validinput) {
                         for (i = 0; i < 3; i++) {
-                            emission[i] = values[i]; 
+                            emission[i] = values[i];
                         }
                     }
-                } else if (cmd == "shininess") {
-                    validinput = readvals(s, 1, values); 
+                }
+                else if (cmd == "shininess") {
+                    validinput = readvals(s, 1, values);
                     if (validinput) {
-                        shininess = values[0]; 
+                        shininess = values[0];
                     }
-                } else if (cmd == "size") {
-                    validinput = readvalsInt(s,2, size_values);
-                    if (validinput) { 
-                        width = (int)size_values[0];
-                        height = (int)size_values[1];
-                    } 
-                } else if (cmd == "camera") {
-                    validinput = readvals(s,10,values); // 10 values eye cen up fov
+                }
+                else if (cmd == "size") {
+                    validinput = readvals(s, 2, values);
+                    if (validinput) {
+                        width = values[0];
+                        height = values[1];
+                    }
+                }
+                else if (cmd == "camera") {
+                    validinput = readvals(s, 10, values); // 10 values eye cen up fov
                     if (validinput) {
                         eyeinit = vec3(values[0], values[1], values[2]);
                         centerinit = vec3(values[3], values[4], values[5]);
                         upinit = vec3(values[6], values[7], values[8]);
                         fovy = values[9];
-                        upinit = Transform::upvector(upinit, eyeinit - centerinit);
+                        //upinit = Transform::upvector(upinit, eyeinit - centerinit);
                         float fovy_radians = fovy * (pi / float(180.0));
                         float aspect = (float)((width) / (height));
                         fovx = (float)(2.0) * (float(180.0) / pi) * atan(tan(fovy_radians) * aspect);
-                        modelview = Transform::lookAt(eyeinit, centerinit, upinit);
-                        transfstack.push(modelview);
+                        //modelview = Transform::lookAt(eyeinit, centerinit, upinit);
+                        //transfstack.push(modelview);
                     }
                 }
 
@@ -287,9 +281,9 @@ void readfile(const char* filename)
                         for (i = 0; i < 3; i++) {
                             vertex[i] = values[i];
                         }
-                        vec4 vertex_vec = vec4(vertex[0], vertex[1], vertex[2], 1.0);
+                        /*vec4 vertex_vec = vec4(vertex[0], vertex[1], vertex[2], 1.0);
                         vertex_vec = vertex_vec * modelview;
-                        /*for (int i = 0; i < 3; i++) {
+                        for (int i = 0; i < 3; i++) {
                             vertex[i] = vertex_vec[i];
                         }*/
                         vertices.push_back(vertex);
@@ -302,9 +296,9 @@ void readfile(const char* filename)
                             }
                             Sphere s = Sphere(sphere_center, values[3]);
                             s.setColorAmbient(ambient[0], ambient[1], ambient[2]);
-                            vec4 sphere_vec = vec4(s.center[0], s.center[1], s.center[2], 1.0);
+                            /*vec4 sphere_vec = vec4(s.center[0], s.center[1], s.center[2], 1.0);
                             sphere_vec = sphere_vec * modelview;
-                            /*for (int i = 0; i < 3; i++) {
+                            for (int i = 0; i < 3; i++) {
                                 s.center[i] = sphere_vec[i];
                             }*/
                             spheres.push_back(s);
@@ -322,25 +316,26 @@ void readfile(const char* filename)
                     else if (cmd == "maxverts") {
                         validinput = readvals(s, 1, values);
                         max_verts = values[0];
-                    } else if (cmd == "vertexnormal" || cmd == "maxvertsnorms" || cmd == "vertexnormal") {
+                    }
+                    else if (cmd == "vertexnormal" || cmd == "maxvertsnorms" || cmd == "vertexnormal") {
                         //Nothing
                     }
                 }
 
                 else if (cmd == "translate") {
-                    validinput = readvals(s,3,values); 
+                    validinput = readvals(s, 3, values);
                     if (validinput) {
                         rightmultiply(Transform::translate(values[0], values[1], values[2]), transfstack);
                     }
                 }
                 else if (cmd == "scale") {
-                    validinput = readvals(s,3,values); 
+                    validinput = readvals(s, 3, values);
                     if (validinput) {
                         rightmultiply(Transform::scale(values[0], values[1], values[2]), transfstack);
                     }
                 }
                 else if (cmd == "rotate") {
-                    validinput = readvals(s,4,values); 
+                    validinput = readvals(s, 4, values);
                     if (validinput) {
                         vec3 axis = glm::normalize(vec3(values[0], values[1], values[2]));
                         rightmultiply(glm::mat4(Transform::rotate(values[3], axis)), transfstack);
@@ -349,12 +344,14 @@ void readfile(const char* filename)
 
                 // I include the basic push/pop code for matrix stacks
                 else if (cmd == "pushTransform") {
-                    transfstack.push(transfstack.top()); 
-                } else if (cmd == "popTransform") {
+                    transfstack.push(transfstack.top());
+                }
+                else if (cmd == "popTransform") {
                     if (transfstack.size() <= 1) {
-                        cerr << "Stack has no elements.  Cannot Pop\n"; 
-                    } else {
-                        transfstack.pop(); 
+                        cerr << "Stack has no elements.  Cannot Pop\n";
+                    }
+                    else {
+                        transfstack.pop();
                     }
                 }
                 else if (cmd == "output") {
@@ -368,23 +365,24 @@ void readfile(const char* filename)
                 }
 
                 else {
-                    cerr << "Unknown Command: " << cmd << " Skipping \n"; 
+                    cerr << "Unknown Command: " << cmd << " Skipping \n";
                 }
             }
-            getline (in, str); 
+            getline(in, str);
         }
 
         // Set up initial position for eye, up and amount
         // As well as booleans 
 
         /*eye = eyeinit;
-        up = upinit; 
+        up = upinit;
         amount = 5;
-        sx = sy = 1.0;  // keyboard controlled scales in x and y 
+        sx = sy = 1.0;  // keyboard controlled scales in x and y
         tx = ty = 0.0;  // keyboard controllled translation in x and y  */
 
-    } else {
-        cerr << "Unable to Open Input Data File " << filename << "\n"; 
-        throw 2; 
+    }
+    else {
+        cerr << "Unable to Open Input Data File " << filename << "\n";
+        throw 2;
     }
 }
