@@ -115,18 +115,18 @@ float Triangle::findIntersection(vec3 p0, vec3 p1) {
 // here for convenience
 
 // The function below applies the appropriate transform to a 4-vector
-void matransform(stack<mat4> &transfstack, int values[])
+void matransform(stack<mat4>& transfstack, int values[])
 {
-    mat4 transform = transfstack.top(); 
-    vec4 valvec = vec4(values[0],values[1],values[2],values[3]); 
-    vec4 newval = transform * valvec; 
-    for (int i = 0; i < 4; i++) values[i] = newval[i]; 
+    mat4 transform = transfstack.top();
+    vec4 valvec = vec4(values[0], values[1], values[2], values[3]);
+    vec4 newval = transform * valvec;
+    for (int i = 0; i < 4; i++) values[i] = newval[i];
 }
 
-void rightmultiply(const mat4 & M, stack<mat4> &transfstack) 
+void rightmultiply(const mat4& M, stack<mat4>& transfstack)
 {
-    mat4 &T = transfstack.top(); 
-    T = T * M; 
+    mat4& T = transfstack.top();
+    T = T * M;
 }
 
 // Function to read the input data values
@@ -178,6 +178,8 @@ void readfile(const char* filename)
                             light_color[i - 3] = values[i];
                         }
                         Light l = Light(light_posn, light_color, true);
+                        lights.push_back(l);
+                        printf("The number of lights in vector<Light> lights = %d", lights.size());
                     }
                 }
                 else if (cmd == "directional") {
@@ -192,6 +194,8 @@ void readfile(const char* filename)
                             light_color[i - 3] = values[i];
                         }
                         Light l = Light(light_posn, light_color, false);
+                        lights.push_back(l);
+                        printf("The number of lights in vector<Light> lights = %d", lights.size());
                     }
                 }
                 else if (cmd == "attenuation") {
