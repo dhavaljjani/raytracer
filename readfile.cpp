@@ -261,10 +261,15 @@ void readfile(const char* filename)
                         centerinit = vec3(values[3], values[4], values[5]);
                         upinit = vec3(values[6], values[7], values[8]);
                         fovy = values[9];
-                        //upinit = Transform::upvector(upinit, eyeinit - centerinit);
+                        upinit = Transform::upvector(upinit, eyeinit - centerinit);
                         float fovy_radians = fovy * (pi / float(180.0));
                         float aspect = (float)((width) / (height));
-                        fovx = (float)(2.0) * (float(180.0) / pi) * atan(tan(fovy_radians) * aspect);
+                        fovx = ((float)(2.0) * atan(tan(fovy_radians / (float)(2.0)) * aspect)) * ((float)(180.0) / pi);
+
+                        //fprintf(stderr, "ascpect: [%f]\n", aspect);
+                        //fprintf(stderr, "arctan: [%f]\n", atan((tan(fovy_radians)* (pi / float(180.0))) * aspect));
+                        //fprintf(stderr, "FOVY: [%f]\n", fovy);
+                        //fprintf(stderr, "FOVX: [%f]\n", fovx);
                         //modelview = Transform::lookAt(eyeinit, centerinit, upinit);
                         //transfstack.push(modelview);
                     }

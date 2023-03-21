@@ -11,22 +11,6 @@ C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(68,40):
 C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(71,39): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
 C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(72,41): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
 C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(73,40): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(81,39): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(81,46): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
 C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(81,36): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-  readfile.cpp
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\readfile.cpp(123,53): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\readfile.cpp(310,68): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\readfile.cpp(310,89): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\readfile.cpp(310,110): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\readfile.cpp(318,45): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\readfile.cpp(360,51): warning C4244: 'argument': conversion from 'float' to 'const _Elem', possible loss of data
-          with
-          [
-              _Elem=char
-          ]
-  Generating Code...
   hw2-windows.vcxproj -> C:\Users\dhava\Documents\raytracer\hw2-windows\Debug\raytracer.exe

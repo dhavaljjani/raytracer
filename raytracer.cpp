@@ -23,9 +23,9 @@ void raytracer() {
 			triangles[k].B[0], triangles[k].B[1], triangles[k].B[2], triangles[k].C[0], triangles[k].C[1], triangles[k].C[2]);
 	}*/
 
-	for (float i = 0; i < width; i++) {
-		for (float j = 0; j < height; j++) {
-			vec3 ray = RayThruPixel(eyeinit - centerinit, upinit, (float)(i + 0.5), (float)(j + 0.5));
+	for (float i = 0; i < height; i++) {
+		for (float j = 0; j < width; j++) {
+			vec3 ray = RayThruPixel(i + (float)0.5, j + (float)0.5);
 			float currentMin = 1000000.0;
 
 			int type = 0; //0 if no intersect, 1 if sphere, 2 if triangle
@@ -62,7 +62,6 @@ void raytracer() {
 			}
 			if (type == 1) {
 				//fprintf(stderr, "HITTING A SPHERE\n");
-				//set the color to the color of the triangle
 				color.rgbRed = current_ambient[0] * 255.0;
 				color.rgbGreen = current_ambient[1] * 255.0;
 				color.rgbBlue = current_ambient[2] * 255.0;
@@ -78,7 +77,7 @@ void raytracer() {
 				color.rgbGreen = 0;
 				color.rgbBlue = 0;
 			}
-			FreeImage_SetPixelColor(bitmap, i, j, &color);
+			FreeImage_SetPixelColor(bitmap, j, height - i, &color);
 		}
 	}
 	input_filename = input_filename.replace(input_filename.find(".test"), input_filename.size(), ".png");
@@ -87,9 +86,9 @@ void raytracer() {
 	FreeImage_DeInitialise();
 }
 
-vec3 RayThruPixel(vec3 a, vec3 b, float i, float j) {
-	vec3 w = normalize(a);
-	vec3 u = normalize(cross(b, w));
+vec3 RayThruPixel(float i, float j) {
+	vec3 w = normalize(eyeinit - centerinit);
+	vec3 u = normalize(cross(upinit, w));
 	vec3 v = cross(w, u);
 	float halfHeight = (float)((float)height / ((float)2.0));
 	float halfWidth = (float)((float)width / ((float)2.0));

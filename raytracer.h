@@ -9,4 +9,4 @@
 #include "readfile.h"
 
 void raytracer();
-vec3 RayThruPixel(vec3 a, vec3 b, float i, float j);
+vec3 RayThruPixel(float i, float j);
