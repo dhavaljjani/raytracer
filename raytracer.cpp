@@ -25,10 +25,6 @@ void raytracer() {
 
 	for (float i = 0; i < width; i++) {
 		for (float j = 0; j < height; j++) {
-
-	for (int i = 0; i < width; i++) {
-		for (int j = 0; j < height; j++) {
-
 			vec3 ray = RayThruPixel(eyeinit - centerinit, upinit, (float)(i + 0.5), (float)(j + 0.5));
 			float currentMin = 1000000.0;
 
@@ -82,7 +78,6 @@ void raytracer() {
 				color.rgbGreen = 0;
 				color.rgbBlue = 0;
 			}
-
 			FreeImage_SetPixelColor(bitmap, i, j, &color);
 		}
 	}

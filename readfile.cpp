@@ -281,7 +281,7 @@ void readfile(const char* filename)
                         for (i = 0; i < 3; i++) {
                             vertex[i] = values[i];
                         }
-                        /*vec4 vertex_vec = vec4(vertex[0], vertex[1], vertex[2], 1.0);
+                        vec4 vertex_vec = vec4(vertex[0], vertex[1], vertex[2], 1.0);
                         vertex_vec = vertex_vec * modelview;
                         for (int i = 0; i < 3; i++) {
                             vertex[i] = vertex_vec[i];
@@ -296,7 +296,7 @@ void readfile(const char* filename)
                             }
                             Sphere s = Sphere(sphere_center, values[3]);
                             s.setColorAmbient(ambient[0], ambient[1], ambient[2]);
-                            vec4 sphere_vec = vec4(s.center[0], s.center[1], s.center[2], 1.0);
+                            vec4 sphere_vec = vec4(s.sphere_center[0], s.sphere_center[1], s.sphere_center[2], 1.0);
                             sphere_vec = sphere_vec * modelview;
                             /*for (int i = 0; i < 3; i++) {
                                 s.center[i] = sphere_vec[i];
