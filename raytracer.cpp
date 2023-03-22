@@ -27,6 +27,7 @@ void raytracer() {
 		for (float j = 0; j < width; j++) {
 			vec3 ray = RayThruPixel(centerinit, upinit, i + (float)0.5, j + (float)0.5);
 			float currentMin = 1000000.0;
+			vec3 intensity(0.0f, 0.0f, 0.0f);
 
 			int type = 0; //0 if no intersect, 1 if sphere, 2 if triangle
 			float current_ambient[3];
@@ -37,8 +38,37 @@ void raytracer() {
 					current_ambient[0] = spheres[k].color_ambient[0];
 					current_ambient[1] = spheres[k].color_ambient[1];
 					current_ambient[2] = spheres[k].color_ambient[2];
+					intensity[0] = current_ambient[0];
+					intensity[1] = current_ambient[1];
+					intensity[2] = current_ambient[2];
 					currentMin = t;
 					type = 1;
+					vec3 ray_direction = normalize(ray);
+
+					vec3 cross_ray = (ray_direction * t) - eyeinit;
+					vec3 normal = cross(cross_ray, spheres[k].sphere_center);
+					//fprintf(stderr, "N:[%f][%f][%f]\n", normal[0], normal[1], normal[2]);
+					for (int p = 0; p < lights.size(); p++) {
+						if (isInShadow(centerinit + t * ray, lights[p].light_posn)) continue;
+						if (!lights[p].isPoint) {
+							//Directional Light
+							fprintf(stderr, "DIRECTIONAL\n");
+							vec3 direction0 = normalize(vec3(lights[p].light_posn[0], lights[p].light_posn[1], lights[p].light_posn[2]));
+							vec3 half0 = normalize(direction0 + eyeinit);
+							intensity += ComputeLight(direction0, lights[p].color, normal, half0, diffuse, specular, shininess);
+						}
+						else {
+							//Point Light
+							fprintf(stderr, "POINT\n");
+							vec3 position = lights[p].light_posn;
+							vec3 direction1 = normalize(position - ray);
+							vec3 half1 = normalize(direction1 + eyeinit);
+							intensity += ComputeLight(direction1, lights[p].color, normal, half1, diffuse, specular, shininess);
+						}
+						//intensity[0] = current_ambient[0];
+						//intensity[1] = current_ambient[1];
+						//intensity[2] = current_ambient[2];
+					}
 				}
 			}
 
@@ -51,6 +81,37 @@ void raytracer() {
 					current_ambient[2] = triangles[k].color_ambient[2];
 					currentMin = t;
 					type = 2;
+					intensity[0] = current_ambient[0];
+					intensity[1] = current_ambient[1];
+					intensity[2] = current_ambient[2];
+					vec3 ray_direction = normalize(ray);
+					Triangle tri = triangles[k];
+
+
+					vec3 cross_ray = (ray_direction * t) - eyeinit;
+					vec3 normal = cross(tri.B - tri.A, tri.C - tri.A);
+					//fprintf(stderr, "N:[%f][%f][%f]\n", normal[0], normal[1], normal[2]);
+					for (int p = 0; p < lights.size(); p++) {
+						if (isInShadow(centerinit + t * ray, lights[p].light_posn)) continue;
+						if (!lights[p].isPoint) {
+							//Directional Light
+							fprintf(stderr, "DIRECTIONAL\n");
+							vec3 direction0 = normalize(vec3(lights[p].light_posn[0], lights[p].light_posn[1], lights[p].light_posn[2]));
+							vec3 half0 = normalize(direction0 + eyeinit);
+							intensity += ComputeLight(direction0, lights[p].color, normal, half0, diffuse, specular, shininess);
+						}
+						else {
+							//Point Light
+							fprintf(stderr, "POINT\n");
+							vec3 position = lights[p].light_posn;
+							vec3 direction1 = normalize(position - ray);
+							vec3 half1 = normalize(direction1 + eyeinit);
+							intensity += ComputeLight(direction1, lights[p].color, normal, half1, diffuse, specular, shininess);
+						}
+						//intensity[0] = current_ambient[0];
+						//intensity[1] = current_ambient[1];
+						//intensity[2] = current_ambient[2];
+					}
 				}
 			}
 
@@ -62,15 +123,15 @@ void raytracer() {
 			}
 			if (type == 1) {
 				//fprintf(stderr, "HITTING A SPHERE\n");
-				color.rgbRed = current_ambient[0] * 255.0;
-				color.rgbGreen = current_ambient[1] * 255.0;
-				color.rgbBlue = current_ambient[2] * 255.0;
+				color.rgbRed = intensity[0] * 255.0;
+				color.rgbGreen = intensity[1] * 255.0;
+				color.rgbBlue = intensity[2] * 255.0;
 			}
 			else if (type == 2) {
 				//fprintf(stderr, "HITTING A TRIANGLE\n");
-				color.rgbRed = current_ambient[0] * 255.0;
-				color.rgbGreen = current_ambient[1] * 255.0;
-				color.rgbBlue = current_ambient[2] * 255.0;
+				color.rgbRed = intensity[0] * 255.0;
+				color.rgbGreen = intensity[1] * 255.0;
+				color.rgbBlue = intensity[2] * 255.0;
 			}
 			else if (type == 0) {
 				//fprintf(stderr, "HITTING NOTHING\n");
@@ -157,4 +218,27 @@ vec3 getColor(int type, int index, vec3 position, int depth) {
 	}
 
 	return vec3(0.0, 0.0, 0.0);//should never reach this case
+}
+
+vec3 ComputeLight(const vec3 direction, const vec3 lightcolor, const vec3 normal, const vec3 halfvec, const float mydiffuse[3], const float myspecular[3], const float myshininess) {
+	//Mostly taken from hw 2
+	float nDotL = dot(normal, direction);
+	vec3 lambert;
+	lambert[0] = mydiffuse[0] * max(nDotL, 0.0f);
+	lambert[1] = mydiffuse[1] * max(nDotL, 0.0f);
+	lambert[2] = mydiffuse[1] * max(nDotL, 0.0f);
+
+	float nDotH = dot(normal, halfvec);
+	vec3 phong;
+	phong[0] = myspecular[0] * pow(max(nDotH, 0.0f), myshininess);
+	phong[1] = myspecular[1] * pow(max(nDotH, 0.0f), myshininess);
+	phong[2] = myspecular[2] * pow(max(nDotH, 0.0f), myshininess);
+
+	vec3 retval;
+	retval[0] = (lightcolor[0] * (lambert[0] + phong[0]));
+	retval[1] = (lightcolor[1] * (lambert[1] + phong[1]));
+	retval[2] = (lightcolor[2] * (lambert[2] + phong[2]));
+
+	fprintf(stderr, "RET VAL:[%f][%f][%f]n", retval[0], retval[1], retval[2]);
+	return retval;
 }
