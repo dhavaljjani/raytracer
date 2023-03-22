@@ -1,0 +1,43 @@
+size 640 480
+
+camera 0 0 0 0 0 -1 0 1 0 45
+
+point 0 20 -40 1 1 1
+directional 0.5 0.5 -0.5 0 0.3 0
+ambient 0.01 0.01 0.01
+specular 0.4 0.4 0.4
+diffuse 0.4 0.4 0.4
+shininess 40
+emission 0 0 0
+
+sphere -.5 1 -.5 0.15
+sphere +.5 1 +.5 0.15
+
+sphere 0 0 1 0.15
+sphere -.5 -.5 1 0.15
+sphere +.5 +.5 1 0.15
+
+sphere -1 -.5 -.5 0.15
+sphere -1 -.5 +.5 0.15
+sphere -1 +.5 +.5 0.15
+sphere -1 +.5 -.5 0.15
+
+ambient 0.2 0.3 0.5
+specular 0.1 0.4 0.9
+diffuse 0.8 0.4 0.2
+shininess 40
+emission 0 0 0
+
+sphere -.5 -1 -.5 0.15
+sphere -.5 -1 +.5 0.15
+sphere +.5 -1 +.5 0.15
+sphere +.5 -1 -.5 0.15
+sphere  0 -1 0 0.15
+
+sphere -.5 -.5 -1 0.15
+sphere -.5   0 -1 0.15
+sphere -.5 +.5 -1 0.15
+sphere +.5 -.5 -1 0.15
+
+sphere +.5   0 -1 0.15
+sphere +.5 +.5 -1 0.15 

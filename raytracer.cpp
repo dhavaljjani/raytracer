@@ -46,6 +46,7 @@ void raytracer() {
 					vec3 ray_direction = normalize(ray);
 
 					vec3 cross_ray = (ray_direction * t) - eyeinit;
+
 					//vec3 normal = cross(cross_ray, spheres[k].sphere_center);
 					vec3 normal = cross_ray - spheres[k].sphere_center;
 					//fprintf(stderr, "N:[%f][%f][%f]\n", normal[0], normal[1], normal[2]);
@@ -94,14 +95,14 @@ void raytracer() {
 						if (isInShadow(centerinit + t * ray, lights[p].light_posn)) continue;
 						if (!lights[p].isPoint) {
 							//Directional Light
-							fprintf(stderr, "DIRECTIONAL\n");
+							//fprintf(stderr, "DIRECTIONAL\n");
 							vec3 direction0 = normalize(vec3(lights[p].light_posn[0], lights[p].light_posn[1], lights[p].light_posn[2]));
 							vec3 half0 = normalize(direction0 + eyeinit);
 							intensity += ComputeLight(direction0, lights[p].color, normal, half0, diffuse, specular, shininess);
 						}
 						else {
 							//Point Light
-							fprintf(stderr, "POINT\n");
+							//fprintf(stderr, "POINT\n");
 							vec3 position = lights[p].light_posn;
 							vec3 direction1 = normalize(position - ray);
 							vec3 half1 = normalize(direction1 + eyeinit);
