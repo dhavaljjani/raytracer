@@ -2,15 +2,15 @@
   raytracer.cpp
 C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(6,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(6,40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(59,31): warning C4244: '=': conversion from 'float' to 'BYTE', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(60,33): warning C4244: '=': conversion from 'float' to 'BYTE', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(61,32): warning C4244: '=': conversion from 'float' to 'BYTE', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(66,39): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(67,41): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(68,40): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(71,39): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(72,41): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(73,40): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(81,46): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(81,36): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(119,31): warning C4244: '=': conversion from 'float' to 'BYTE', possible loss of data
+C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(120,33): warning C4244: '=': conversion from 'float' to 'BYTE', possible loss of data
+C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(121,32): warning C4244: '=': conversion from 'float' to 'BYTE', possible loss of data
+C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(125,33): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(126,35): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(127,34): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(131,33): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(132,35): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(133,34): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(141,46): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+C:\Users\dhava\Documents\raytracer\hw2-windows\hw2-windows\raytracer.cpp(141,36): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
   hw2-windows.vcxproj -> C:\Users\dhava\Documents\raytracer\hw2-windows\Debug\raytracer.exe

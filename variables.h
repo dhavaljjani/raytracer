@@ -33,5 +33,5 @@ EXTERN int max_depth;
 EXTERN vec3 sphere_center;
 EXTERN vector<vec3> vertices;
 
-EXTERN vector<vec3> lights;
+EXTERN vector<Light> lights;
 EXTERN vec3 attenuation;

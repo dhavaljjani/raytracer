@@ -179,7 +179,7 @@ void readfile(const char* filename)
                         }
                         Light l = Light(light_posn, light_color, true);
                         lights.push_back(l);
-                        printf("The number of lights in vector<Light> lights = %d", lights.size());
+                        //printf("The number of lights in vector<Light> lights = %d", lights.size());
                     }
                 }
                 else if (cmd == "directional") {
@@ -195,7 +195,7 @@ void readfile(const char* filename)
                         }
                         Light l = Light(light_posn, light_color, false);
                         lights.push_back(l);
-                        printf("The number of lights in vector<Light> lights = %d", lights.size());
+                        //printf("The number of lights in vector<Light> lights = %d", lights.size());
                     }
                 }
                 else if (cmd == "attenuation") {
