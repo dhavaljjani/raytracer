@@ -11,6 +11,7 @@ public:
     vec3 sphere_center;
     float r;
     float color_ambient[3] = { 0, 0, 0 };
+    mat4 transform;
     Sphere(vec3 center_input, float r);
 
     float findIntersection(vec3 p0, vec3 p1);
@@ -23,6 +24,7 @@ public:
     vec3 B;
     vec3 C;
     float color_ambient[3] = { 0, 0, 0 };
+    mat4 transform;
     Triangle(vec3 A, vec3 B, vec3 C);
 
     float findIntersection(vec3 p0, vec3 p1);
@@ -40,5 +42,5 @@ public:
 
 void matransform(stack<mat4>& transfstack, int values[]);
 void rightmultiply(const mat4& M, stack<mat4>& transfstack);
-bool readvals(stringstream& s, const int numvals, float values[]);
+bool readvals(stringstream& s, const int numvals, float values[], string cmd);
 void readfile(const char* filename);

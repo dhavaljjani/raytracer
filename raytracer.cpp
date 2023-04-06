@@ -6,33 +6,25 @@ void raytracer() {
 	FIBITMAP* bitmap = FreeImage_Allocate(width, height, 24);
 	RGBQUAD color;
 
-	//PRINTING STUFF
-	/*fprintf(stderr, "Width: %f, Height: %f\n", width, height);
-	fprintf(stderr, "NUM SPHERES:[%i], NUM TRIANGLES:[%i]\n", spheres.size(), triangles.size());
-	fprintf(stderr, "Fovy: %f\n", fovy);
-	fprintf(stderr, "Fovx: %f\n", fovx);
-	for (int k = 0; k < max_verts; k++) {
-		fprintf(stderr, "Vertex %i: [%f, %f, %f]\n", k, vertices[k][0], vertices[k][1], vertices[k][2]);
-	}
-	for (int k = 0; k < spheres.size(); k++) {
-		fprintf(stderr, "Sphere: [%f, %f, %f] with radius %f\n", spheres[k].center[0], spheres[k].center[1],
-			spheres[k].center[2], spheres[k].r);
-	}
-	for (int k = 0; k < triangles.size(); k++) {
-		fprintf(stderr, "Triangle: [%f, %f, %f] [%f, %f, %f] [%f, %f, %f]\n", triangles[k].A[0], triangles[k].A[1], triangles[k].A[2],
-			triangles[k].B[0], triangles[k].B[1], triangles[k].B[2], triangles[k].C[0], triangles[k].C[1], triangles[k].C[2]);
-	}*/
-
 	for (float i = 0; i < height; i++) {
 		for (float j = 0; j < width; j++) {
+			//fprintf(stderr, "Completed %.1f%% \n\r", 100.0f * ((i * height) + j) / (width * height));
+
 			vec3 ray = RayThruPixel(centerinit, upinit, i + (float)0.5, j + (float)0.5);
-			float currentMin = 1000000.0;
+			float currentMin = FLT_MAX;
 			vec3 intensity(0.0f, 0.0f, 0.0f);
+			vec3 normal;
+			float t;
+
 
 			int type = 0; //0 if no intersect, 1 if sphere, 2 if triangle
 			float current_ambient[3];
 			for (int k = 0; k < spheres.size(); k++) {
-				float t = spheres[k].findIntersection(eyeinit - centerinit, ray);
+				mat4 inverse_tranform = inverse(spheres[k].transform);
+				vec4 p0 = inverse_tranform * vec4((eyeinit - centerinit)[0],
+					(eyeinit - centerinit)[1], (eyeinit - centerinit)[2], 1.0f);
+				vec4 p1 = inverse_tranform * vec4(ray, 0.0f);
+				t = spheres[k].findIntersection(vec3(p0[0], p0[1], p0[2]), vec3(p1[0], p1[1], p1[2]));
 				//if (t < 0) continue;
 				if (t < currentMin && t > 0) {
 					current_ambient[0] = spheres[k].color_ambient[0];
@@ -43,37 +35,27 @@ void raytracer() {
 					intensity[2] = current_ambient[2];
 					currentMin = t;
 					type = 1;
-					vec3 ray_direction = normalize(ray);
 
-					vec3 cross_ray = (ray_direction * t) - eyeinit;
+					vec3 point = (vec3(p0[0], p0[1], p0[2]) * t) - vec3(p1[0], p1[1], p1[2]);
+					vec4 p = spheres[k].transform * vec4(point, 1.0f);
+					vec4 sphereNormal = vec4(point - spheres[k].sphere_center, 0.0f);
+					normal = normalize(vec3(transpose(inverse_tranform) * sphereNormal));
 
-					//vec3 normal = cross(cross_ray, spheres[k].sphere_center);
-					vec3 normal = cross_ray - spheres[k].sphere_center;
+					//KEEP THIS:
+					//vec3 ray_direction = normalize(ray);
+					//vec3 cross_ray = (ray_direction * t) - eyeinit;
+					//vec3 normal = cross_ray - spheres[k].sphere_center;
+
 					//fprintf(stderr, "N:[%f][%f][%f]\n", normal[0], normal[1], normal[2]);
-					for (int p = 0; p < lights.size(); p++) {
-						if (isInShadow(centerinit + t * ray, lights[p].light_posn)) continue;
-						if (!lights[p].isPoint) {
-							//Directional Light
-							vec3 direction0 = normalize(vec3(lights[p].light_posn[0], lights[p].light_posn[1], lights[p].light_posn[2]));
-							vec3 half0 = normalize(direction0 + eyeinit);
-							intensity += ComputeLight(direction0, lights[p].color, normal, half0, diffuse, specular, shininess);
-						}
-						else {
-							//Point Light
-							vec3 position = lights[p].light_posn;
-							vec3 direction1 = normalize(position - ray);
-							vec3 half1 = normalize(direction1 + eyeinit);
-							intensity += ComputeLight(direction1, lights[p].color, normal, half1, diffuse, specular, shininess);
-						}
-						//intensity[0] = current_ambient[0];
-						//intensity[1] = current_ambient[1];
-						//intensity[2] = current_ambient[2];
-					}
 				}
 			}
 
 			for (int k = 0; k < triangles.size(); k++) {
-				float t = triangles[k].findIntersection(eyeinit - centerinit, ray);
+				mat4 inverse_tranform = inverse(triangles[k].transform);
+				vec4 p0 = inverse_tranform * vec4((eyeinit - centerinit)[0],
+					(eyeinit - centerinit)[1], (eyeinit - centerinit)[2], 1.0f);
+				vec4 p1 = inverse_tranform * vec4(ray, 0.0f);
+				t = triangles[k].findIntersection(vec3(p0[0], p0[1], p0[2]), vec3(p1[0], p1[1], p1[2]));
 				//if (t < 0) continue;
 				if (t < currentMin && t > 0) {
 					current_ambient[0] = triangles[k].color_ambient[0];
@@ -84,35 +66,37 @@ void raytracer() {
 					intensity[0] = current_ambient[0];
 					intensity[1] = current_ambient[1];
 					intensity[2] = current_ambient[2];
+
 					vec3 ray_direction = normalize(ray);
 					Triangle tri = triangles[k];
 
-
 					vec3 cross_ray = (ray_direction * t) - eyeinit;
-					vec3 normal = cross(tri.B - tri.A, tri.C - tri.A);
+					vec3 A = vec3(inverse_tranform * vec4(tri.A[0], tri.A[1], tri.A[2], 1.0f));
+					vec3 B = vec3(inverse_tranform * vec4(tri.B[0], tri.B[1], tri.B[2], 1.0f));
+					vec3 C = vec3(inverse_tranform * vec4(tri.C[0], tri.C[1], tri.C[2], 1.0f));
+					normal = normalize(cross(B - A, C - A));
+					//vec3 normal = vec3(norm[0], norm[1], norm[2]);
+
 					//fprintf(stderr, "N:[%f][%f][%f]\n", normal[0], normal[1], normal[2]);
-					for (int p = 0; p < lights.size(); p++) {
-						if (isInShadow(centerinit + t * ray, lights[p].light_posn)) continue;
-						if (!lights[p].isPoint) {
-							//Directional Light
-							//fprintf(stderr, "DIRECTIONAL\n");
-							vec3 direction0 = normalize(vec3(lights[p].light_posn[0], lights[p].light_posn[1], lights[p].light_posn[2]));
-							vec3 half0 = normalize(direction0 + eyeinit);
-							intensity += ComputeLight(direction0, lights[p].color, normal, half0, diffuse, specular, shininess);
-						}
-						else {
-							//Point Light
-							//fprintf(stderr, "POINT\n");
-							vec3 position = lights[p].light_posn;
-							vec3 direction1 = normalize(position - ray);
-							vec3 half1 = normalize(direction1 + eyeinit);
-							intensity += ComputeLight(direction1, lights[p].color, normal, half1, diffuse, specular, shininess);
-						}
-						//intensity[0] = current_ambient[0];
-						//intensity[1] = current_ambient[1];
-						//intensity[2] = current_ambient[2];
-					}
 				}
+			}
+			for (int p = 0; p < lights.size(); p++) {
+				if (isInShadow(centerinit + t * ray, lights[p].light_posn)) continue;
+				if (!lights[p].isPoint) {
+					//Directional Light
+					vec3 direction0 = normalize(vec3(lights[p].light_posn[0], lights[p].light_posn[1], lights[p].light_posn[2]));
+					vec3 half0 = normalize(direction0 + eyeinit);
+					intensity += ComputeLight(direction0, lights[p].color, normal, half0, diffuse, specular, shininess);
+				} else {
+					//Point Light
+					vec3 position = lights[p].light_posn;
+					vec3 direction1 = normalize(position - ray);
+					vec3 half1 = normalize(direction1 + eyeinit);
+					intensity += ComputeLight(direction1, lights[p].color, normal, half1, diffuse, specular, shininess);
+				}
+				intensity[0] += current_ambient[0] + emission[0];
+				intensity[1] += current_ambient[1] + emission[1];
+				intensity[2] += current_ambient[2] + emission[2];
 			}
 
 			if (currentMin < 0) {
@@ -121,20 +105,12 @@ void raytracer() {
 				color.rgbGreen = ambient[1] * (float)255.0;
 				color.rgbBlue = ambient[2] * (float)255.0;
 			}
-			if (type == 1) {
-				//fprintf(stderr, "HITTING A SPHERE\n");
+			if (type == 1 || type == 2) { // 1 is HITTING SPHERE, 2 is HITTING TRIANGLE
 				color.rgbRed = intensity[0] * 255.0;
 				color.rgbGreen = intensity[1] * 255.0;
 				color.rgbBlue = intensity[2] * 255.0;
 			}
-			else if (type == 2) {
-				//fprintf(stderr, "HITTING A TRIANGLE\n");
-				color.rgbRed = intensity[0] * 255.0;
-				color.rgbGreen = intensity[1] * 255.0;
-				color.rgbBlue = intensity[2] * 255.0;
-			}
-			else if (type == 0) {
-				//fprintf(stderr, "HITTING NOTHING\n");
+			else if (type == 0) { //HITTING NOTHING
 				color.rgbRed = 0;
 				color.rgbGreen = 0;
 				color.rgbBlue = 0;
