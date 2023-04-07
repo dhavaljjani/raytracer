@@ -3,7 +3,7 @@
 A simple raytracer made with pure C++ and glm functions. Can render primitive objects such as spheres and triangles with vertices, using a .test input file.
 Handles recursive lighting with specular, diffuse, ambient, and emission lighting. **In Progress**
 
-##Images
+## Images
 
 Rendering of dice:
 
