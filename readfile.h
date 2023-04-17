@@ -40,6 +40,16 @@ public:
     Light(vec3 posn, vec3 color, bool isPoint);
 };
 
+class Intersection {
+    public:
+        float t;
+        int type;
+        vec4 p0; vec4 p1;
+        vec3 normal;
+        int objectIndex;
+
+};
+
 void matransform(stack<mat4>& transfstack, int values[]);
 void rightmultiply(const mat4& M, stack<mat4>& transfstack);
 bool readvals(stringstream& s, const int numvals, float values[], string cmd);
