@@ -47,7 +47,8 @@ class Intersection {
         vec4 p0; vec4 p1;
         vec3 normal;
         int objectIndex;
-
+        float currentMin;
+        float current_ambient[3];
 };
 
 void matransform(stack<mat4>& transfstack, int values[]);
