@@ -11,11 +11,17 @@ public:
     vec3 sphere_center;
     float r;
     float color_ambient[3] = { 0, 0, 0 };
+    float object_emission[3] = { 0, 0, 0 };
+    float object_specular[3] = {0, 0, 0};
+    float object_diffuse[3] = {0, 0, 0};
     mat4 transform;
     Sphere(vec3 center_input, float r);
 
     float findIntersection(vec3 p0, vec3 p1);
     void setColorAmbient(float a, float b, float c);
+    void setObjectEmission(float a, float b, float c);
+    void setObjectSpecular(float a, float b, float c);
+    void setObjectDiffuse(float a, float b, float c);
 };
 
 class Triangle {
@@ -24,11 +30,17 @@ public:
     vec3 B;
     vec3 C;
     float color_ambient[3] = { 0, 0, 0 };
+    float object_emission[3] = { 0, 0, 0 };
+    float object_specular[3] = {0, 0, 0};
+    float object_diffuse[3] = {0, 0, 0};
     mat4 transform;
     Triangle(vec3 A, vec3 B, vec3 C);
 
     float findIntersection(vec3 p0, vec3 p1);
     void setColorAmbient(float a, float b, float c);
+    void setObjectEmission(float a, float b, float c);
+    void setObjectSpecular(float a, float b, float c);
+    void setObjectDiffuse(float a, float b, float c);
 };
 
 class Light {
@@ -46,9 +58,13 @@ class Intersection {
         int type;
         vec4 p0; vec4 p1;
         vec3 normal;
-        int objectIndex;
+        bool hit;
+        bool sphere_hit; bool triangle_hit;
         float currentMin;
-        float current_ambient[3];
+        float current_ambient[3]{};
+        float object_emission[3]{};
+        float object_specular[3]{};
+        float object_diffuse[3]{};
 };
 
 void matransform(stack<mat4>& transfstack, int values[]);

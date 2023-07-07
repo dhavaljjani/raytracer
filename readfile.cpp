@@ -18,15 +18,32 @@ void Sphere::setColorAmbient(float a, float b, float c) {
     this->color_ambient[2] = c;
 }
 
-float Sphere::findIntersection(vec3 p0, vec3 p1) {
+void Sphere::setObjectEmission(float a, float b, float c) {
+    this->object_emission[0] = a;
+    this->object_emission[1] = b;
+    this->object_emission[2] = c;
+}
 
+void Sphere::setObjectSpecular(float a, float b, float c) {
+    this->object_specular[0] = a;
+    this->object_specular[1] = b;
+    this->object_specular[2] = c;
+}
+
+void Sphere::setObjectDiffuse(float a, float b, float c) {
+    this->object_diffuse[0] = a;
+    this->object_diffuse[1] = b;
+    this->object_diffuse[2] = c;
+}
+
+float Sphere::findIntersection(vec3 p0, vec3 p1) {
     float A = glm::dot(p1, p1);
     //Is this meant to be center or centerinit?
     float B = 2 * dot(p1, p0 - sphere_center);
     float C = dot(p0 - sphere_center, p0 - sphere_center) - (r * r);
 
     float discriminant = ((B * B) - ((float)(4.0) * A * C));
-    if (discriminant < 0) return -1;
+    if (discriminant < 0) return INFINITY;
 
     discriminant = sqrtf(discriminant);
     //fprintf(stderr, "A:[%f], B:[%f], C:[%f]\n", A, B, C);
@@ -34,30 +51,23 @@ float Sphere::findIntersection(vec3 p0, vec3 p1) {
 
     float intOne = (-B - discriminant) / ((float)(2.0) * A);
     float intTwo = (-B + discriminant) / ((float)(2.0) * A);
-    //fprintf(stderr, "1:[%f], 2:[%f]\n", intOne, intTwo);
 
     if (intOne > 0 && intTwo > 0) {
-        return min(intOne, intTwo);
+        //fprintf(stderr, "To be returned: %f\n", intOne);
+        return intOne;
     }
     else if (intOne < 0 && intTwo > 0) {
+        //fprintf(stderr, "To be returned: %f\n", intTwo);
         return intTwo;
     }
-    else if (intOne == intTwo) {
+    else if (intOne == intTwo && intOne > 0) {
+        //fprintf(stderr, "To be returned: %f\n", intOne);
         return intOne;
     }
     else {
-        return -1;
+        //fprintf(stderr, "To be returned: %f\n", -1.0f);
+        return INFINITY;
     }
-
-    //these two lines return negative values of t, only in the case where both are negative
-    //otherwise it returns the greatest positive integer
-    if (intOne < 0) return intTwo;
-    if (intTwo < 0) return intOne;
-
-
-    //in the case where both values are positive, return the smallest t value
-    if (intOne < intTwo) return intOne;
-    return intTwo;
 }
 
 
@@ -79,28 +89,46 @@ void Triangle::setColorAmbient(float a, float b, float c) {
     this->color_ambient[2] = c;
 }
 
+void Triangle::setObjectEmission(float a, float b, float c) {
+    this->object_emission[0] = a;
+    this->object_emission[1] = b;
+    this->object_emission[2] = c;
+}
+
+void Triangle::setObjectSpecular(float a, float b, float c) {
+    this->object_specular[0] = a;
+    this->object_specular[1] = b;
+    this->object_specular[2] = c;
+}
+
+void Triangle::setObjectDiffuse(float a, float b, float c) {
+    this->object_diffuse[0] = a;
+    this->object_diffuse[1] = b;
+    this->object_diffuse[2] = c;
+}
+
 float Triangle::findIntersection(vec3 p0, vec3 p1) {
     vec3 normal = glm::cross(C - A, B - A);
     normal = normalize(normal);
 
-    if (glm::dot(p1, normal) == 0) return -1; //ray is parallel to plane, no intersection
+    if (glm::dot(p1, normal) == 0) return INFINITY; //ray is parallel to plane, no intersection
     float t = (glm::dot(A, normal) - glm::dot(p0, normal)) / (glm::dot(p1, normal)); //find t value for plane intersection
 
-    vec3 P = p0 + t * p1;
+    vec3 P = p0 + (t * p1);
 
     //formulas taken from discussion slide as directed
     vec3 APNorm = glm::cross(normal, C - B) / (glm::dot(glm::cross(normal, C - B), A - C));
     float APw = glm::dot(-APNorm, C);
 
     float a = glm::dot(APNorm, P) + APw;
-    if (a < 0 || a > 1) return -1;
+    if (a < 0 || a > 1) return INFINITY;
 
     vec3 BPNorm = glm::cross(normal, A - C) / (glm::dot(glm::cross(normal, A - C), B - A));
     float BPw = glm::dot(-BPNorm, A);
 
     float b = glm::dot(BPNorm, P) + BPw;
 
-    if (b > 1 || b < 0) return -1;
+    if (b > 1 || b < 0) return INFINITY;
 
 
     vec3 CPNorm = glm::cross(normal, B - A) / (glm::dot(glm::cross(normal, B - A), C - B));
@@ -108,7 +136,7 @@ float Triangle::findIntersection(vec3 p0, vec3 p1) {
 
     float c = glm::dot(CPNorm, P) + CPw;
 
-    if (c < 0 || c > 1) return -1;
+    if (c < 0 || c > 1) return INFINITY;
     return t;
 }
 
@@ -165,6 +193,7 @@ void readfile(const char* filename)
                 int i;
                 float values[10];
                 bool validinput; // Validity of input 
+                max_depth = 4;
                 //fprintf(stderr, "COMMAND: %s\n", cmd);
                 // Process the light, add it to database.
                 // Lighting Command
@@ -301,6 +330,9 @@ void readfile(const char* filename)
                             }
                             Sphere s = Sphere(sphere_center, values[3]);
                             s.setColorAmbient(ambient[0], ambient[1], ambient[2]);
+                            s.setObjectEmission(emission[0], emission[1], emission[2]);
+                            s.setObjectSpecular(specular[0], specular[1], specular[2]);
+                            s.setObjectDiffuse(diffuse[0], diffuse[1], diffuse[2]);
                             vec4 sphere_vec = vec4(s.sphere_center[0], s.sphere_center[1], s.sphere_center[2], 1.0);
                             /*sphere_vec = modelview * sphere_vec;
                             for (int i = 0; i < 3; i++) {
@@ -316,6 +348,9 @@ void readfile(const char* filename)
                             Triangle t = Triangle(vertices[values[0]], vertices[values[1]], vertices[values[2]]);
                             //fprintf(stderr, "vals: [%i][%i][%i]\n", ambient[0], ambient[1], ambient[2]);
                             t.setColorAmbient(ambient[0], ambient[1], ambient[2]);
+                            t.setObjectEmission(emission[0], emission[1], emission[2]);
+                            t.setObjectSpecular(specular[0], specular[1], specular[2]);
+                            t.setObjectDiffuse(diffuse[0], diffuse[1], diffuse[2]);
                             t.transform = transfstack.top();
                             triangles.push_back(t);
                         }
@@ -372,7 +407,6 @@ void readfile(const char* filename)
                 else if (cmd == "maxdepth") {
                     max_depth = 5;
                 }
-
                 else {
                     cerr << "Unknown Command: " << cmd << " Skipping \n";
                 }
