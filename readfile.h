@@ -58,8 +58,8 @@ class Intersection {
         int type;
         vec4 p0; vec4 p1;
         vec3 normal;
+        vec3 point;
         bool hit;
-        bool sphere_hit; bool triangle_hit;
         float currentMin;
         float current_ambient[3]{};
         float object_emission[3]{};
