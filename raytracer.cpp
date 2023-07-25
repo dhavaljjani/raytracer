@@ -12,137 +12,74 @@ void raytracer() {
 
 			vec3 ray = RayThruPixel(centerinit, upinit, i + (float)0.5, j + (float)0.5);
 
-			Intersection intersection = intersect(ray);
+			vec3 intensity = recursiveRay(ray, 0);
+
+			//fprintf(stderr, "Intensity: [%f][%f][%f]\n", intensity[0], intensity[1], intensity[2]);
+
+			color.rgbRed = intensity[0] * (float)255.0;
+			color.rgbGreen = intensity[1] * (float)255.0;
+			color.rgbBlue = intensity[2] * (float)255.0;
+			/*Intersection intersection = intersect(ray);
 
 			if (intersection.hit) {
 				//if (!isShadowedPixel(intersection.p0, intersection.p1, intersection.currentMin, lights))
 
-				bool isInShadow = false;
-				float visibility = 1.0f; float L = 0.0f;
+				float v = 1.0f; float L = 0.0f;
+				float distance = 0.0f; vec3 direction0;
 				for (int i = 0; i < lights.size(); i++) {
 					if (lights[i].isPoint) {
 						//Point Light
-						vec3 shadow_ray_direction = (lights[i].light_posn - intersection.point);
-						float d = length(shadow_ray_direction);
-						L = (1 / (attenuation.x + (attenuation.y * d) + (attenuation.z * d * d)));
-						/*fprintf(stderr, "T: %f\n", intersection.currentMin);
-						fprintf(stderr, "P0: [%f][%f][%f]\n", intersection.p0[0], intersection.p0[1], intersection.p0[2]);
-						fprintf(stderr, "P1: [%f][%f][%f]\n", intersection.p1[0], intersection.p1[1], intersection.p1[2]);
-						fprintf(stderr, "Light position: [%f][%f][%f]\n", lights[i].light_posn[0], lights[i].light_posn[1], lights[i].light_posn[2]);
-						fprintf(stderr, "Shadow ray: [%f][%f][%f]\n", shadow_ray_direction[0], shadow_ray_direction[1], shadow_ray_direction[2]);*/
-						Intersection visiblility = intersect(shadow_ray_direction);
+						//shadow_ray_direction
+						direction0 = normalize(lights[i].light_posn - intersection.point);
+						distance = length(direction0);
+						L = (1.0f / (attenuation.x + (attenuation.y * distance) + (attenuation.z * distance * distance)));
+						Intersection visiblility = intersect(direction0);
 						if (visiblility.hit) {
-							isInShadow = true;
-							visibility = 0.0f;
 							fprintf(stderr, "In the shadows! - point light\n");
+							v = 0.0f;
 						}
 					} else {
 						//Directional Light
-						//vec3 direction0 = (lights[i].light_posn - intersection.point);
-						vec3 direction0 = normalize(lights[i].light_posn);
+						direction0 = normalize(lights[i].light_posn);
+						distance = length(direction0);
 						Intersection visiblility = intersect(direction0);
 						if (visiblility.hit) {
-							visibility = 0.0f;
-							isInShadow = true;
-							fprintf(stderr, "In the shadows! - point light\n");
-						}
-						direction0 = normalize(direction0);
-						/*vec3 shadow_ray_direction = (lights[i].light_posn - vec3(intersection_point));
-						Intersection visiblility = intersect(shadow_ray_direction);
-						fprintf(stderr, "visiblility.hit = %d\n", visiblility.hit);
-						if (visiblility.hit) {
-							isInShadow = true;
-							fprintf(stderr, "In the shadows! - point light\n");
-						}*/
-						/*vec3 shadow_ray_direction = (lights[i].light_posn - vec3(intersection_point / intersection_point[3]));
-						float d = sqrt(pow(shadow_ray_direction[0], 2) + pow(shadow_ray_direction[1], 2) + pow(shadow_ray_direction[2], 2));
-						float L = 1 / (attenuation.x + (attenuation.y * d) + (attenuation.z * d * d));
-						Intersection visiblility = intersect(shadow_ray_direction);
-						if (visiblility.hit) {
-							isInShadow = TRUE;
 							fprintf(stderr, "In the shadows! - directional light\n");
+							v = 0.0f;
 						}
-						shadow_ray_direction = normalize(shadow_ray_direction);*/
 					}
-				}
-				if (!isInShadow) {
-					color.rgbRed = visibility * (intersection.object_diffuse[0] + intersection.object_emission[0]) * (float)255.0;
-					color.rgbGreen = visibility * (intersection.object_diffuse[1] + intersection.object_emission[1]) * (float)255.0;
-					color.rgbBlue = visibility * (intersection.object_diffuse[2] + intersection.object_emission[2]) * (float)255.0;
-				} else {
-					color.rgbRed = 0.0f;
-					color.rgbGreen = 0.0f;
-					color.rgbBlue = 0.0f;
+
+					if (!isInShadow) {
+						//trace reflected ray
+						vec3 half = normalize(direction0 + eyeinit);
+
+						//vec3 colors = ComputeLight(direction0, lights[i].color, intersection.normal, half, diffuse, specular, shininess);
+
+						//colors += (vec3(intersection.current_ambient[0], intersection.current_ambient[1], intersection.current_ambient[2]) 
+							//+ vec3(intersection.object_emission[0], intersection.object_emission[1], intersection.object_emission[2]));
+
+						//colors *= v;
+
+						vec3 diffuse = vec3(intersection.object_diffuse[0], intersection.object_diffuse[1], intersection.object_diffuse[2]) * glm::max(dot(intersection.normal, direction0), 0.f);
+						vec3 specular = vec3(intersection.object_specular[0], intersection.object_specular[1], intersection.object_specular[2]) * powf(glm::max(dot(intersection.normal, half), 0.f), shininess);
+						vec3 colors = attenuation * lights[i].color * (diffuse + specular);
+
+
+						color.rgbRed = colors[0] * (float)255.0;
+						color.rgbGreen = colors[1] * (float)255.0;
+						color.rgbBlue = colors[2] * (float)255.0;
+					}
+					else {
+						//write function for this maybe?
+						color.rgbRed = 0.0f;
+						color.rgbGreen = 0.0f;
+						color.rgbBlue = 0.0f;
+					}
 				}
 			} else {
 				color.rgbRed = 0.0f;
 				color.rgbGreen = 0.0f;
-				color.rgbBlue = 0.0f; // -(10 * intersection.currentMin);
-			}
-			/*if (intersection.hit == TRUE) {
-				//loop through all lights to see shadow
-				vec3 intersection_point = vec3((intersection.p1 * intersection.currentMin) + intersection.p0);
-				bool isInShadow = FALSE;
-				float V = 1;
-				for (int i = 0; i < lights.size(); i++) {
-					//if the point is shadowed, don't add that light
-					if (lights[i].isPoint) { //1
-						vec3 shadow_ray_direction = (lights[i].light_posn - intersection_point);
-						float d = sqrt(pow(shadow_ray_direction[0], 2) + pow(shadow_ray_direction[1], 2) + pow(shadow_ray_direction[2], 2));
-						float L = 1 / (attenuation.x + (attenuation.y * d) + (attenuation.z * d * d));
-						Intersection visiblility = intersect(intersection_point + shadow_ray_direction);
-						if (visiblility.hit) {
-							isInShadow = TRUE;
-							fprintf(stderr, "In the shadows! - point light\n");
-							V = 0;
-						}
-						shadow_ray_direction = normalize(shadow_ray_direction);
-					} else {
-						//DIRECTIONAL
-						vec3 shadow_ray_direction = normalize(lights[i].light_posn);
-						//attempt 1:
-						Intersection visiblility = intersect(intersection_point + shadow_ray_direction);
-						if (visiblility.hit) {
-							isInShadow = TRUE;
-							fprintf(stderr, "In the shadows! - directional light\n");
-							V = 0;
-						}
-					}
-				}
-				//trace reflected ray depth number of times --lighting stuff
-				if (intersection.type == 1 || intersection.type == 2) { // 1 is HITTING SPHERE, 2 is HITTING TRIANGLE
-					color.rgbRed = (intersection.object_diffuse[0] + intersection.object_emission[0]) * (float)255.0;
-					color.rgbGreen = (intersection.object_diffuse[1] + intersection.object_emission[1]) * (float)255.0;
-					color.rgbBlue = (intersection.object_diffuse[2] + intersection.object_emission[2]) * (float)255.0;
-				}
-				else if (intersection.type == 0) {
-					color.rgbRed = 0.0f;
-					color.rgbGreen = 0.0f;
-					color.rgbBlue = 0.0f; // -(10 * intersection.currentMin);
-				}
-				vec3 intensity(0.0f, 0.0f, 0.0f);
-				vec3 intersection_point = vec3((intersection.p0 * intersection.t) + intersection.p1); //swap?
-				vec3 reflected_direction = normalize(vec3(intersection.p1) - 2.0f * glm::dot(vec3(intersection.p1), intersection.normal) * intersection.normal);
-				for (int p = 0; p < lights.size(); p++) {
-					if (isInShadow(centerinit + intersection.t * ray, lights[p].light_posn)) continue;
-					vec3 position = lights[p].light_posn;
-					vec3 direction; vec3 half;
-					if (!lights[p].isPoint) {
-						//Directional Light
-						direction = normalize(position);
-						half = normalize(direction + eyeinit);
-					}
-					else {
-						//Point Light
-						direction = normalize(position - (reflected_direction + intersection_point));
-						half = normalize(direction + eyeinit);
-					}
-					intensity += recursiveRay(reflected_direction, 0);
-					intensity += ComputeLight(direction, lights[p].color, intersection.normal, half, diffuse, specular, shininess);
-				}
-				intensity[0] += (intersection.current_ambient[0] + intersection.object_emission[0]);
-				intensity[1] += (intersection.current_ambient[1] + intersection.object_emission[1]);
-				intensity[2] += (intersection.current_ambient[2] + intersection.object_emission[2]);
+				color.rgbBlue = 0.0f;
 			}*/
 			FreeImage_SetPixelColor(bitmap, j, height - i, &color);
 		}
@@ -252,6 +189,62 @@ vec3 ComputeLight(const vec3 direction, const vec3 lightcolor, const vec3 normal
 
 vec3 recursiveRay(vec3 ray, int depth) {
 	Intersection intersection = intersect(ray);
+
+	if (!intersection.hit || depth == max_depth) { //BASE CASE
+		return vec3(0.0f, 0.0f, 0.0f);
+	} else {
+		vec3 color;
+		float v = 1.0f; float L = 0.0f;
+		float distance = 0.0f; vec3 direction0;
+		for (int i = 0; i < lights.size(); i++) {
+			if (lights[i].isPoint) {
+				//Point Light
+				//shadow_ray_direction
+				direction0 = normalize(lights[i].light_posn - intersection.point);
+				distance = length(direction0);
+				L = (1.0f / (attenuation.x + (attenuation.y * distance) + (attenuation.z * distance * distance)));
+				Intersection visiblility = intersect(direction0);
+				if (visiblility.hit) {
+					fprintf(stderr, "In the shadows! - point light\n");
+					v = 0.0f;
+				}
+			}
+			else {
+				//Directional Light
+				direction0 = normalize(lights[i].light_posn);
+				distance = length(direction0);
+				Intersection visiblility = intersect(direction0);
+				if (visiblility.hit) {
+					fprintf(stderr, "In the shadows! - directional light\n");
+					v = 0.0f;
+				}
+			}
+			//trace reflected ray
+			vec3 half = normalize(direction0 + eyeinit);
+
+			vec3 colors = ComputeLight(direction0, lights[i].color, intersection.normal, half, diffuse, specular, shininess);
+
+			colors += (vec3(intersection.current_ambient[0], intersection.current_ambient[1], intersection.current_ambient[2]) 
+							+ vec3(intersection.object_emission[0], intersection.object_emission[1], intersection.object_emission[2]));
+
+			colors *= v;
+
+			//vec3 diffuse = vec3(intersection.object_diffuse[0], intersection.object_diffuse[1], intersection.object_diffuse[2]) * glm::max(dot(intersection.normal, direction0), 0.f);
+			//vec3 specular = vec3(intersection.object_specular[0], intersection.object_specular[1], intersection.object_specular[2]) * powf(glm::max(dot(intersection.normal, half), 0.f), shininess);
+			//color = attenuation * lights[i].color * (diffuse + specular);
+			color = colors;
+
+			if (intersection.object_specular[0] != 0.0f && intersection.object_specular[1] != 0.0f && intersection.object_specular[2] != 0.0f) {
+				vec3 intersection_point = vec3((intersection.p1 * intersection.t) + intersection.p0);
+				vec3 reflected_direction = normalize(vec3(intersection.p1) - 2.0f * glm::dot(vec3(intersection.p1), intersection.normal) * intersection.normal);
+				return (color + recursiveRay(reflected_direction, depth + 1));
+			}
+
+			return color;
+		}
+	}
+
+	/*Intersection intersection = intersect(ray);
 	//fprintf(stderr, "intersection type: %i\n", intersection.type);
 	if (intersection.type == 0|| depth == max_depth) { //BASE CASE
 		return vec3(0.0f, 0.0f, 0.0f);
@@ -282,7 +275,7 @@ vec3 recursiveRay(vec3 ray, int depth) {
 		}
 		
 		return (color + recursiveRay(reflected_direction, depth + 1));
-	}
+	}*/
 }
 
 Intersection intersect(vec3 ray) {
@@ -320,19 +313,13 @@ Intersection intersect(vec3 ray) {
 			intersection.currentMin = sphere_min;
 			intersection.type = 1;
 
-			//vec4 p = spheres[k].transform * vec4(intersection.point, 1.0f);
 			intersection.point = vec3(intersection.p0 + (intersection.currentMin * intersection.p1));
-			vec4 sphereNormal = vec4(intersection.point - spheres[k].sphere_center, 0.0f);
-			//intersection.point = vec3(p / p.w);
-			intersection.normal = normalize(vec3(transpose(inverse_tranform) * sphereNormal));
 			//intersection.point = vec3(transpose(inverse_tranform) * (intersection.p0 + (intersection.currentMin * intersection.p1)));
+			vec4 sphereNormal = vec4(intersection.point - spheres[k].sphere_center, 0.0f);
+			intersection.normal = normalize(vec3(transpose(inverse_tranform) * sphereNormal));
+			intersection.point = vec3(inverse_tranform * vec4(intersection.point, 1.0f));
 
-
-			//KEEP THIS:
-			//vec3 ray_direction = normalize(ray);
-			//vec3 cross_ray = (ray_direction * t) - eyeinit;
-			//vec3 normal = cross_ray - spheres[k].sphere_center;
-			//fprintf(stderr, "N:[%f][%f][%f]\n", normal[0], normal[1], normal[2]);
+			//intersection.point = vec3(transpose(inverse_tranform) * (intersection.p0 + (intersection.currentMin * intersection.p1)));
 		}
 	}
 	for (int k = 0; k < triangles.size(); k++) {
@@ -366,16 +353,19 @@ Intersection intersect(vec3 ray) {
 			intersection.currentMin = triangle_min;
 			intersection.type = 2;
 
-			//vec3 ray_direction = normalize(ray);
 			Triangle tri = triangles[k];
 
-			//vec3 cross_ray = (ray_direction * intersection.t) - eyeinit;
 			intersection.point = vec3(intersection.p0 + (intersection.currentMin * intersection.p1));
-			vec3 A = vec3(inverse_tranform * vec4(tri.A[0], tri.A[1], tri.A[2], 1.0f));
-			vec3 B = vec3(inverse_tranform * vec4(tri.B[0], tri.B[1], tri.B[2], 1.0f));
-			vec3 C = vec3(inverse_tranform * vec4(tri.C[0], tri.C[1], tri.C[2], 1.0f));
-			intersection.normal = normalize(cross(C - A, B - A)); //make consistent with find intersection for triangle!
-			//intersection.point = vec3(transpose(inverse_tranform) * (intersection.p0 + (intersection.currentMin * intersection.p1)));
+			vec3 A = vec3(vec4(tri.A[0], tri.A[1], tri.A[2], 1.0f));
+			vec3 B = vec3(vec4(tri.B[0], tri.B[1], tri.B[2], 1.0f));
+			vec3 C = vec3(vec4(tri.C[0], tri.C[1], tri.C[2], 1.0f));
+			intersection.normal = vec3(normalize(transpose(inverse_tranform) * vec4(cross(C - A, B - A), 0.0f)));
+
+			//vec3 A = vec3(inverse_tranform * vec4(tri.A[0], tri.A[1], tri.A[2], 1.0f));
+			//vec3 B = vec3(inverse_tranform * vec4(tri.B[0], tri.B[1], tri.B[2], 1.0f));
+			//vec3 C = vec3(inverse_tranform * vec4(tri.C[0], tri.C[1], tri.C[2], 1.0f));
+			//intersection.normal = normalize(cross(C - A, B - A));
+			intersection.point = vec3(inverse_tranform * vec4(intersection.point, 1.0f)); //figure this out!!
 		}
 	}
 	intersection.currentMin = min(sphere_min, triangle_min);
