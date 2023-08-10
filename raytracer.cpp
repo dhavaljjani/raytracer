@@ -9,14 +9,9 @@ void raytracer() {
 	for (float i = 0; i < height; i++) {
 		for (float j = 0; j < width; j++) {
 			fprintf(stderr, "Completed %.1f%%\n\r", 100.0f * ((i * width) + j) / (width * height));
-
 			vec3 ray = RayThruPixel(centerinit, upinit, i + (float)0.5, j + (float)0.5);
 
 			vec3 intensity = recursiveRay(ray, 0);
-
-			//if (intensity[1] != 0.0f) {
-				//fprintf(stderr, "Intensity: [%f][%f][%f]\n", intensity[0], intensity[1], intensity[2]);
-			//}
 			
 			color.rgbRed = intensity[0] * (float)255.0;
 			color.rgbGreen = intensity[1] * (float)255.0;
@@ -60,7 +55,7 @@ bool isInShadow(vec3 origin, vec3 lightPos) {
 
 	for (int i = 0; i < spheres.size(); i++) {
 		Sphere sphe = spheres[i];
-		float t = sphe.findIntersection(origin, direction);
+		float t = sphe.findIntersection(origin, normalize(lightPos - origin));
 		if (t == INFINITY) continue;
 
 		if (t < dist) return true;
@@ -68,7 +63,7 @@ bool isInShadow(vec3 origin, vec3 lightPos) {
 
 	for (int i = 0; i < triangles.size(); i++) {
 		Triangle tri = triangles[i];
-		float t = tri.findIntersection(origin, direction);
+		float t = tri.findIntersection(origin, normalize(lightPos - origin));
 		if (t == INFINITY) continue;
 
 		if (t < dist) return true;
@@ -102,7 +97,7 @@ vec3 ComputeLight(const vec3 direction, const vec3 lightcolor, const vec3 normal
 
 vec3 recursiveRay(vec3 ray, int depth) {
 	Intersection intersection = intersect(ray);
-	if (!intersection.hit || depth == max_depth) { //BASE CASE
+	if (depth == max_depth || !intersection.hit) { //BASE CASE
 		return vec3(0.0f, 0.0f, 0.0f);
 	} else {
 		vec3 colors = {0.0f, 0.0f, 0.0f};
@@ -110,7 +105,7 @@ vec3 recursiveRay(vec3 ray, int depth) {
 		colors[1] += (intersection.current_ambient[1] + intersection.object_emission[1]);
 		colors[2] += (intersection.current_ambient[2] + intersection.object_emission[2]);
 
-		float v = 1.0f; float L = 0.0f;
+		float v = 1.0f; vec3 L = { 0.0f, 0.0f, 0.0f };
 		float distance = 0.0f; vec3 direction0; 
 		for (int i = 0; i < lights.size(); i++) {
 			if (lights[i].isPoint) {
@@ -118,7 +113,7 @@ vec3 recursiveRay(vec3 ray, int depth) {
 				//shadow_ray_direction
 				direction0 = normalize(lights[i].light_posn - intersection.point);
 				distance = length(direction0);
-				L = (1.0f / (attenuation.x + (attenuation.y * distance) + (attenuation.z * distance * distance)));
+				L = (lights[i].color / (attenuation.x + (attenuation.y * distance) + (attenuation.z * distance * distance)));
 				Intersection visiblility = intersect(direction0);
 				if (visiblility.hit) {
 					fprintf(stderr, "In the shadows! - point light\n");
@@ -130,7 +125,7 @@ vec3 recursiveRay(vec3 ray, int depth) {
 				direction0 = normalize(lights[i].light_posn);
 				distance = length(direction0);
 				Intersection visiblility = intersect(direction0);
-				L = 1.0f;
+				L = lights[i].color;
 				if (visiblility.hit) {
 					fprintf(stderr, "In the shadows! - directional light\n");
 					v = 0.0f;
@@ -144,7 +139,7 @@ vec3 recursiveRay(vec3 ray, int depth) {
 
 			float nDotL = dot(intersection.normal, direction0);
 
-			lighting_coeff += (vec3(intersection.object_diffuse[0], intersection.object_diffuse[1], intersection.object_diffuse[2]) * max(nDotL, 0.0f));
+			lighting_coeff += (lights[i].color * vec3(intersection.object_diffuse[0], intersection.object_diffuse[1], intersection.object_diffuse[2]) * max(nDotL, 0.0f));
 
 			float nDotH = dot(intersection.normal, half);
 
@@ -152,13 +147,16 @@ vec3 recursiveRay(vec3 ray, int depth) {
 
 			//colors += ComputeLight(direction0, lights[i].color, intersection.normal, half, diffuse, specular, shininess);
 
-			lighting_coeff *= v;
+			//lighting_coeff *= v;
 
 			lighting_coeff *= L;
 
-			//if (isInShadow(intersection.point, lights[i].light_posn)) {
+			if (isInShadow(vec3(intersection.p0), lights[i].light_posn)) {
 				//continue;
-			//}
+				//v = 0.0f;
+			}
+
+			lighting_coeff *= v;
 
 			colors += lighting_coeff;
 
@@ -166,12 +164,13 @@ vec3 recursiveRay(vec3 ray, int depth) {
 			// add recursive lighting
 
 			//if (intersection.object_specular[0] != 0.0f && intersection.object_specular[1] != 0.0f && intersection.object_specular[2] != 0.0f) {
-				//vec3 reflected_direction = normalize(vec3(intersection.p1) - 2.0f * glm::dot(vec3(intersection.p1), intersection.normal) * intersection.normal);
-				vec3 reflected_direction = normalize(direction0 - 2.0f * dot(direction0, intersection.normal) * intersection.normal);
+				vec3 reflected_direction = normalize((vec3(intersection.p0) - intersection.point) - 2.0f * glm::dot((vec3(intersection.p0) - intersection.point), intersection.normal) * intersection.normal);
+				//vec3 reflected_direction = normalize(direction0 - 2.0f * dot(direction0, intersection.normal) * intersection.normal);
+				//reflected_direction = normalize(intersection.point + (reflected_direction * shift));
 				Intersection reflected_intersection = intersect(reflected_direction);
-				if (reflected_intersection.hit) {
-					colors += (vec3(reflected_intersection.object_specular[0], reflected_intersection.object_specular[1], reflected_intersection.object_specular[2]) * recursiveRay(reflected_direction, depth + 1));
-				}
+				//if (reflected_intersection.hit) {
+					colors += (vec3(intersection.object_specular[0], intersection.object_specular[1], intersection.object_specular[2]) * recursiveRay(reflected_direction, depth + 1));
+				//}
 			//}
 
 		}
