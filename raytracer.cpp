@@ -160,20 +160,20 @@ vec3 recursiveRay(vec3 ray, int depth) {
 
 			colors += lighting_coeff;
 
-			// + SIr
+		}
+
+		// + SIr
 			// add recursive lighting
 
 			//if (intersection.object_specular[0] != 0.0f && intersection.object_specular[1] != 0.0f && intersection.object_specular[2] != 0.0f) {
-				vec3 reflected_direction = normalize((vec3(intersection.p0) - intersection.point) - 2.0f * glm::dot((vec3(intersection.p0) - intersection.point), intersection.normal) * intersection.normal);
-				//vec3 reflected_direction = normalize(direction0 - 2.0f * dot(direction0, intersection.normal) * intersection.normal);
-				//reflected_direction = normalize(intersection.point + (reflected_direction * shift));
-				Intersection reflected_intersection = intersect(reflected_direction);
-				//if (reflected_intersection.hit) {
-					colors += (vec3(intersection.object_specular[0], intersection.object_specular[1], intersection.object_specular[2]) * recursiveRay(reflected_direction, depth + 1));
-				//}
-			//}
-
-		}
+		vec3 reflected_direction = normalize((vec3(intersection.p0) - intersection.point) - 2.0f * glm::dot((vec3(intersection.p0) - intersection.point), intersection.normal) * intersection.normal);
+		//vec3 reflected_direction = normalize(direction0 - 2.0f * dot(direction0, intersection.normal) * intersection.normal);
+		//reflected_direction = normalize(intersection.point + (reflected_direction * shift));
+		Intersection reflected_intersection = intersect(reflected_direction);
+		//if (reflected_intersection.hit) {
+		colors += (vec3(intersection.object_specular[0], intersection.object_specular[1], intersection.object_specular[2]) * recursiveRay(reflected_direction, depth + 1));
+		//}
+	//}
 
 		return colors;
 	}
