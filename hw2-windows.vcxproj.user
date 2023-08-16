@@ -4,4 +4,9 @@
     <LocalDebuggerCommandArguments>scene4-diffuse.test</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LocalDebuggerCommand>$(TargetPath)</LocalDebuggerCommand>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerCommandArguments>scene4-specular.test</LocalDebuggerCommandArguments>
+  </PropertyGroup>
 </Project>

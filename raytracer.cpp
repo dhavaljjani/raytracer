@@ -105,29 +105,29 @@ vec3 recursiveRay(vec3 ray, int depth) {
 		colors[1] += (intersection.current_ambient[1] + intersection.object_emission[1]);
 		colors[2] += (intersection.current_ambient[2] + intersection.object_emission[2]);
 
-		float v = 1.0f; vec3 L = { 0.0f, 0.0f, 0.0f };
+		float v = 1.0f; float L = 1.0f;
 		float distance = 0.0f; vec3 direction0; 
 		for (int i = 0; i < lights.size(); i++) {
 			if (lights[i].isPoint) {
 				//Point Light
 				//shadow_ray_direction
-				direction0 = normalize(lights[i].light_posn - intersection.point);
+				direction0 = (lights[i].light_posn - intersection.point);
 				distance = length(direction0);
-				L = (lights[i].color / (attenuation.x + (attenuation.y * distance) + (attenuation.z * distance * distance)));
+				L = (1.0f / (attenuation.x + (attenuation.y * distance) + (attenuation.z * distance * distance)));
 				Intersection visiblility = intersect(direction0);
 				if (visiblility.hit) {
-					fprintf(stderr, "In the shadows! - point light\n");
+					//fprintf(stderr, "In the shadows! - point light\n");
 					//v = 0.0f;
 				}
+				direction0 = normalize(direction0);
 			}
 			else {
 				//Directional Light
 				direction0 = normalize(lights[i].light_posn);
 				distance = length(direction0);
 				Intersection visiblility = intersect(direction0);
-				L = lights[i].color;
 				if (visiblility.hit) {
-					fprintf(stderr, "In the shadows! - directional light\n");
+					//fprintf(stderr, "In the shadows! - directional light\n");
 					v = 0.0f;
 				}
 			}
@@ -214,13 +214,16 @@ Intersection intersect(vec3 ray) {
 			intersection.currentMin = sphere_min;
 			intersection.type = 1;
 
-			intersection.point = vec3(intersection.p0 + (intersection.currentMin * intersection.p1));
-			//intersection.point = vec3(transpose(inverse_tranform) * (intersection.p0 + (intersection.currentMin * intersection.p1)));
+			/*intersection.point = vec3(intersection.p0 + (intersection.currentMin * intersection.p1));
 			vec4 sphereNormal = vec4(intersection.point - spheres[k].sphere_center, 0.0f);
 			intersection.normal = normalize(vec3(transpose(inverse_tranform) * sphereNormal));
-			intersection.point = vec3(inverse_tranform * vec4(intersection.point, 1.0f));
+			intersection.point = vec3(inverse_tranform * vec4(intersection.point, 1.0f));*/
 
-			//intersection.point = vec3(transpose(inverse_tranform) * (intersection.p0 + (intersection.currentMin * intersection.p1)));
+			vec3 pT = vec3(intersection.p0 + (intersection.t * intersection.p1));
+			vec4 p = spheres[k].transform * vec4(pT, 1);
+			vec4 normalSphere = vec4(pT - spheres[k].sphere_center, 0.0f);
+			intersection.point = vec3(p / p.w);
+			intersection.normal = normalize(vec3(transpose(inverse_tranform) * normalSphere));
 		}
 	}
 	for (int k = 0; k < triangles.size(); k++) {
