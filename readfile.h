@@ -59,7 +59,7 @@ class Intersection {
         vec4 p0; vec4 p1;
         vec3 normal;
         vec3 point;
-        bool hit;
+        bool hit = false;
         float currentMin;
         float current_ambient[3]{};
         float object_emission[3]{};

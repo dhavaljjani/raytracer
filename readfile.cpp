@@ -294,19 +294,9 @@ void readfile(const char* filename)
                         float fovy_radians = fovy * (pi / float(180.0));
                         float aspect = (float)((width) / (height));
                         fovx = ((float)(2.0) * atan(tan(fovy_radians / (float)(2.0)) * aspect)) * ((float)(180.0) / pi);
-
-                        //fprintf(stderr, "ascpect: [%f]\n", aspect);
-                        //fprintf(stderr, "arctan: [%f]\n", atan((tan(fovy_radians)* (pi / float(180.0))) * aspect));
-                        //fprintf(stderr, "FOVY: [%f]\n", fovy);
-                        //fprintf(stderr, "FOVX: [%f]\n", fovx);
-                        //modelview = Transform::lookAt(eyeinit, centerinit, upinit);
-                        //transfstack.push(modelview);
                     }
                 }
 
-                // I've left the code for loading objects in the skeleton, so 
-                // you can get a sense of how this works.  
-                // Also look at demo.txt to get a sense of why things are done this way.
                 else if (cmd == "sphere" || cmd == "tri" || cmd == "vertex"
                     || cmd == "maxverts" || cmd == "maxvertsnorms" || cmd == "vertexnormal"
                     || cmd == "trinormal") {
@@ -334,10 +324,6 @@ void readfile(const char* filename)
                             s.setObjectSpecular(specular[0], specular[1], specular[2]);
                             s.setObjectDiffuse(diffuse[0], diffuse[1], diffuse[2]);
                             vec4 sphere_vec = vec4(s.sphere_center[0], s.sphere_center[1], s.sphere_center[2], 1.0);
-                            /*sphere_vec = modelview * sphere_vec;
-                            for (int i = 0; i < 3; i++) {
-                                s.sphere_center[i] = sphere_vec[i];
-                            }*/
                             s.transform = transfstack.top();
                             spheres.push_back(s);
                         }
@@ -413,15 +399,6 @@ void readfile(const char* filename)
             }
             getline(in, str);
         }
-
-        // Set up initial position for eye, up and amount
-        // As well as booleans 
-
-        /*eye = eyeinit;
-        up = upinit;
-        amount = 5;
-        sx = sy = 1.0;  // keyboard controlled scales in x and y
-        tx = ty = 0.0;  // keyboard controllled translation in x and y  */
 
     }
     else {
