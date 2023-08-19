@@ -16,6 +16,7 @@ int main(int argc, char* argv[]) {
         exit(-1);
     }
 
+    max_depth = 5;
     readfile(argv[1]);
     raytracer();
 

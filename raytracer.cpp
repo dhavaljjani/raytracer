@@ -113,7 +113,7 @@ vec3 recursiveRay(vec3 ray, vec3 p0, int depth) {
 				shadow_ray_direction = (lights[i].light_posn - intersection.point);
 				float distance = length(shadow_ray_direction);
 				L = (1.0f / (attenuation.x + (attenuation.y * distance) + (attenuation.z * distance * distance)));
-				Intersection visibility = intersect(shadow_ray_direction, intersection.point + (shadow_ray_direction * shift));
+				Intersection visibility = intersect(shadow_ray_direction, intersection.point + (shadow_ray_direction * shift));				
 				if (visibility.currentMin < distance) {
 					//fprintf(stderr, "In the shadows! - point light\n");
 					v = 0.0f;

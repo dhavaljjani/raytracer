@@ -1,6 +1,10 @@
 size 640 480
 
-camera 0 0 0 0 0 -1 0 1 0 45
+camera -2 -2 -1 0 0 -1 0 1 0 45
+
+#camera -2 -2 0 0 0 -1 0 1 0 45
+#camera 0 0 0 0 0 -1 0 1 0 45
+
 
 point 0 20 -40 1 1 1
 directional 0.5 0.5 -0.5 0 0.3 0
@@ -25,7 +29,7 @@ sphere -1 +.5 -.5 0.15
 ambient 0.2 0.3 0.5
 specular 0.1 0.4 0.9
 diffuse 0.8 0.4 0.2
-shininess 50
+shininess 100
 emission 0 0 0
 
 sphere -.5 -1 -.5 0.15
