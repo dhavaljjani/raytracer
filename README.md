@@ -37,7 +37,9 @@ Rendering of the Stanford dragon:
 
 Rendering of Indra's Net:
 
-Rendering of a pyramid/desert scene:
+Rendering of a marble pyramid/desert scene:
+
+![Rendering of dragon](https://github.com/dhavaljjani/raytracer/blob/main/drydryruins.png)
 
 
 ## How does a raytracer work?
