@@ -161,3 +161,18 @@ tri 41 44 48
 tri 41 46 48
 
 sphere 6.075 1.25 1.75 0.212
+
+#Pyramid 3
+
+ambient 0.878 0.860 0.007
+
+vertex 0 7 0
+vertex 0 9 0
+vertex 2 7 0
+vertex 2 9 0
+vertex 1 8 2
+
+tri 51 53 55
+tri 52 51 55
+tri 53 54 55
+tri 51 54 55
