@@ -1,0 +1,12 @@
+size 640 480
+camera 0 -5 0 0 5 0 0 0 1 45
+output rubikscube.png
+
+vertex 5 5 5
+vertex 5 5 0
+vertex 5 0 5
+vertex 5 0 0
+
+tri 1 2 3
+tri 2 3 4
+#1 of 9 of 6
