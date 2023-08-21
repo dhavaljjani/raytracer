@@ -37,10 +37,19 @@ Rendering of the Stanford dragon:
 
 Rendering of Indra's Net:
 
+![Rendering of indras net 2](https://github.com/dhavaljjani/raytracer/blob/main/indras2.png)
+
+![Rendering of indras net](https://github.com/dhavaljjani/raytracer/blob/main/indras.png)
+
 Rendering of a marble pyramid/desert scene:
 
 ![Rendering of dragon](https://github.com/dhavaljjani/raytracer/blob/main/drydryruins.png)
 
+Rendering of some random spheres:
+
+![Rendering of spheres](https://github.com/dhavaljjani/raytracer/blob/main/spheres.png)
+
+Rendering of a Rubik's Cube:
 
 ## How does a raytracer work?
 
