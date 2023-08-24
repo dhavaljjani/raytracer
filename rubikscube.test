@@ -2,7 +2,8 @@ size 640 480
 camera -20 -20 -20 20 20 20 0 0 1 45
 output rubikscube.png
 
-specular 0.8 0.8 0.8
+#specular 0.8 0.8 0.8
+
 #Red face
 ambient 1 0 0
 shininess 40
@@ -350,16 +351,16 @@ tri 180 181 182
 tri 181 182 183
 
 vertex 3.5 2.5 -8.5
-vertex 8 2.5 -8.5
+vertex 8.5 2.5 -8.5
 vertex 3.5 -2.5 -8.5
-vertex 8 -2.5 -8.5
+vertex 8.5 -2.5 -8.5
 tri 184 185 186
 tri 185 186 187
 
 vertex -3.5 2.5 -8.5
-vertex -8 2.5 -8.5
+vertex -8.5 2.5 -8.5
 vertex -3.5 -2.5 -8.5
-vertex -8 -2.5 -8.5
+vertex -8.5 -2.5 -8.5
 tri 188 189 190
 tri 189 190 191
 

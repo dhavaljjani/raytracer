@@ -7,6 +7,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LocalDebuggerCommand>$(TargetPath)</LocalDebuggerCommand>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>ufo.test</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>rubikscube.test</LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>

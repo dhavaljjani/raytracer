@@ -1,9 +1,10 @@
 size 640 480
-camera 0 -20 9 0 0 9 0 0 1 45
+camera 0 -20 9 0 0 9 0.5 0 1 45
 output ufo.png
 
-#Walls
-vertex 
+#Sun!
+ambient 1 1 0
+sphere 43 19 70 20
 
 #Top of UFO
 ambient 0.1 0.1 0.1
@@ -15,14 +16,19 @@ sphere 0 5 10 5
 directional 0 -2 -10 0.1 1 0.1
 point 0 5 15 1 1 1
 ambient 1 1 1
-sphere 0 5 22 1
-sphere -2 4 22 1
-sphere 1 7 22 1
-sphere 4 6 22 1
-sphere -3 9 22 1
-sphere 5 9 22 1
-sphere -1 8 23 1
-sphere -3 4 22 1
+sphere 0 5 40 1
+sphere -2 4 40 1
+sphere 1 7 40 1
+sphere 4 6 40 1
+sphere -3 9 40 1
+sphere 5 9 40 1
+sphere -1 8 40 1
+sphere -3 4 40 1
+sphere -10 7 40 1
+sphere 7 3 40 1
+sphere 2 -9 40 1
+sphere 4 -3 40 1
+sphere -3 9 40 1
 
 #UFO
 ambient 0 0 0
@@ -41,8 +47,13 @@ emission 0 1 0
 diffuse 1 1 1
 specular 0 0 0
 
-sphere 8 2 8 1
-sphere 4 0 7.7 1
-sphere 0 -4 7.6 1
-sphere -4 -1 8 1
-sphere -6 2 8 1
+sphere 10 3.5 7 0.5
+sphere 6 -3 7 0.5
+sphere 4 -5 7 0.5
+sphere 2 -6 7 0.5
+sphere 0 -7 7 0.5
+sphere -2 -6 7 0.5
+sphere -4 -5 7 0.5
+sphere -6 -3 7 0.5
+sphere -10 3.5 7 0.5
+
