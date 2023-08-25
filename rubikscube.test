@@ -1,8 +1,6 @@
 size 640 480
-camera -20 -20 -20 20 20 20 0 0 1 45
+camera -20 -20 -20 20 20 25 0 0 1 45
 output rubikscube.png
-
-#specular 0.8 0.8 0.8
 
 #Red face
 ambient 1 0 0
@@ -150,16 +148,16 @@ tri 72 73 74
 tri 73 74 75
 
 vertex 3.5 8.5 2.5
-vertex 8 8.5 2.5
+vertex 8.5 8.5 2.5
 vertex 3.5 8.5 -2.5
-vertex 8 8.5 -2.5
+vertex 8.5 8.5 -2.5
 tri 76 77 78
 tri 77 78 79
 
 vertex -3.5 8.5 2.5
-vertex -8 8.5 2.5
+vertex -8.5 8.5 2.5
 vertex -3.5 8.5 -2.5
-vertex -8 8.5 -2.5
+vertex -8.5 8.5 -2.5
 tri 80 81 82
 tri 81 82 83
 
@@ -178,30 +176,30 @@ tri 88 89 90
 tri 89 90 91
 
 vertex 3.5 8.5 8.5
-vertex 8 8.5 8.5
+vertex 8.5 8.5 8.5
 vertex 3.5 8.5 3.5
-vertex 8 8.5 3.5
+vertex 8.5 8.5 3.5
 tri 92 93 94
 tri 93 94 95
 
 vertex 3.5 8.5 -3.5
-vertex 8 8.5 -3.5
+vertex 8.5 8.5 -3.5
 vertex 3.5 8.5 -8.5
-vertex 8 8.5 -8.5
+vertex 8.5 8.5 -8.5
 tri 96 97 98
 tri 97 98 99
 
 vertex -3.5 8.5 8.5
-vertex -8 8.5 8.5
+vertex -8.5 8.5 8.5
 vertex -3.5 8.5 3.5
-vertex -8 8.5 3.5
+vertex -8.5 8.5 3.5
 tri 100 101 102
 tri 101 102 103
 
 vertex -3.5 8.5 -3.5
-vertex -8 8.5 -3.5
+vertex -8.5 8.5 -3.5
 vertex -3.5 8.5 -8.5
-vertex -8 8.5 -8.5
+vertex -8.5 8.5 -8.5
 tri 104 105 106
 tri 105 106 107
 
@@ -217,16 +215,16 @@ tri 108 109 110
 tri 109 110 111
 
 vertex 3.5 -8.5 2.5
-vertex 8 -8.5 2.5
+vertex 8.5 -8.5 2.5
 vertex 3.5 -8.5 -2.5
-vertex 8 -8.5 -2.5
+vertex 8.5 -8.5 -2.5
 tri 112 113 114
 tri 113 114 115
 
 vertex -3.5 -8.5 2.5
-vertex -8 -8.5 2.5
+vertex -8.5 -8.5 2.5
 vertex -3.5 -8.5 -2.5
-vertex -8 -8.5 -2.5
+vertex -8.5 -8.5 -2.5
 tri 116 117 118
 tri 117 118 119
 
@@ -245,30 +243,30 @@ tri 124 125 126
 tri 125 126 127
 
 vertex 3.5 -8.5 8.5
-vertex 8 -8.5 8.5
+vertex 8.5 -8.5 8.5
 vertex 3.5 -8.5 3.5
-vertex 8 -8.5 3.5
+vertex 8.5 -8.5 3.5
 tri 128 129 130
 tri 129 130 131
 
 vertex 3.5 -8.5 -3.5
-vertex 8 -8.5 -3.5
+vertex 8.5 -8.5 -3.5
 vertex 3.5 -8.5 -8.5
-vertex 8 -8.5 -8.5
+vertex 8.5 -8.5 -8.5
 tri 132 133 134
 tri 133 134 135
 
 vertex -3.5 -8.5 8.5
-vertex -8 -8.5 8.5
+vertex -8.5 -8.5 8.5
 vertex -3.5 -8.5 3.5
-vertex -8 -8.5 3.5
+vertex -8.5 -8.5 3.5
 tri 136 137 138
 tri 137 138 139
 
 vertex -3.5 -8.5 -3.5
-vertex -8 -8.5 -3.5
+vertex -8.5 -8.5 -3.5
 vertex -3.5 -8.5 -8.5
-vertex -8 -8.5 -8.5
+vertex -8.5 -8.5 -8.5
 tri 140 141 142
 tri 141 142 143
 
@@ -284,16 +282,16 @@ tri 144 145 146
 tri 145 146 147
 
 vertex 3.5 2.5 8.5
-vertex 8 2.5 8.5
+vertex 8.5 2.5 8.5
 vertex 3.5 -2.5 8.5
-vertex 8 -2.5 8.5
+vertex 8.5 -2.5 8.5
 tri 148 149 150
 tri 149 150 151
 
 vertex -3.5 2.5 8.5
-vertex -8 2.5 8.5
+vertex -8.5 2.5 8.5
 vertex -3.5 -2.5 8.5
-vertex -8 -2.5 8.5
+vertex -8.5 -2.5 8.5
 tri 152 153 154
 tri 153 154 155
 
@@ -312,30 +310,30 @@ tri 160 161 162
 tri 161 162 163
 
 vertex 3.5 8.5 8.5
-vertex 8 8.5 8.5
+vertex 8.5 8.5 8.5
 vertex 3.5 3.5 8.5
-vertex 8 3.5 8.5
+vertex 8.5 3.5 8.5
 tri 164 165 166
 tri 165 166 167
 
 vertex 3.5 -3.5 8.5
-vertex 8 -3.5 8.5
+vertex 8.5 -3.5 8.5
 vertex 3.5 -8.5 8.5
-vertex 8 -8.5 8.5
+vertex 8.5 -8.5 8.5
 tri 168 169 170
 tri 169 170 171
 
 vertex -3.5 8.5 8.5
-vertex -8 8.5 8.5
+vertex -8.5 8.5 8.5
 vertex -3.5 3.5 8.5
-vertex -8 3.5 8.5
+vertex -8.5 3.5 8.5
 tri 172 173 174
 tri 173 174 175
 
 vertex -3.5 -3.5 8.5
-vertex -8 -3.5 8.5
+vertex -8.5 -3.5 8.5
 vertex -3.5 -8.5 8.5
-vertex -8 -8.5 8.5
+vertex -8.5 -8.5 8.5
 tri 176 177 178
 tri 177 178 179
 
@@ -379,29 +377,29 @@ tri 196 197 198
 tri 197 198 199
 
 vertex 3.5 8.5 -8.5
-vertex 8 8.5 -8.5
+vertex 8.5 8.5 -8.5
 vertex 3.5 3.5 -8.5
-vertex 8 3.5 -8.5
+vertex 8.5 3.5 -8.5
 tri 200 201 202
 tri 201 202 203
 
 vertex 3.5 -3.5 -8.5
-vertex 8 -3.5 -8.5
+vertex 8.5 -3.5 -8.5
 vertex 3.5 -8.5 -8.5
-vertex 8 -8.5 -8.5
+vertex 8.5 -8.5 -8.5
 tri 204 205 206
 tri 205 206 207
 
 vertex -3.5 8.5 -8.5
-vertex -8 8.5 -8.5
+vertex -8.5 8.5 -8.5
 vertex -3.5 3.5 -8.5
-vertex -8 3.5 -8.5
+vertex -8.5 3.5 -8.5
 tri 208 209 210
 tri 209 210 211
 
 vertex -3.5 -3.5 -8.5
-vertex -8 -3.5 -8.5
+vertex -8.5 -3.5 -8.5
 vertex -3.5 -8.5 -8.5
-vertex -8 -8.5 -8.5
+vertex -8.5 -8.5 -8.5
 tri 212 213 214
 tri 213 214 215
