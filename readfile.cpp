@@ -108,8 +108,7 @@ void Triangle::setObjectDiffuse(float a, float b, float c) {
 }
 
 float Triangle::findIntersection(vec3 p0, vec3 p1) {
-    vec3 normal = glm::cross(C - A, B - A);
-    normal = normalize(normal);
+    vec3 normal = normalize(glm::cross(B - A, C - A));
 
     if (glm::dot(p1, normal) == 0) return INFINITY; //ray is parallel to plane, no intersection
     float t = (glm::dot(A, normal) - glm::dot(p0, normal)) / (glm::dot(p1, normal)); //find t value for plane intersection

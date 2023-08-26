@@ -237,9 +237,18 @@ Intersection intersect(vec3 ray, vec3 p0) {
 			vec3 A = vec3(vec4(tri.A[0], tri.A[1], tri.A[2], 1.0f));
 			vec3 B = vec3(vec4(tri.B[0], tri.B[1], tri.B[2], 1.0f));
 			vec3 C = vec3(vec4(tri.C[0], tri.C[1], tri.C[2], 1.0f));
-			intersection.normal = normalize(cross(B - A, C - A));;
+			intersection.normal = tri.normal;
+			intersection.normal = normalize(cross(B - A, C - A));
 
-			intersection.point = vec3(triangles[k].transform * vec4(intersection.point, 1.0f)); //figure this out!!
+			float dot_product = dot(ray, intersection.normal);
+
+
+			if (dot_product > 0.0f) {
+				//fprintf(stderr, "scenario 1\n");
+				intersection.normal *= -1;
+			}
+
+			intersection.point = vec3(triangles[k].transform * vec4(intersection.point, 1.0f));
 		}
 	}
 	intersection.currentMin = min(sphere_min, triangle_min);

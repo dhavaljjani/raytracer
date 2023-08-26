@@ -29,6 +29,7 @@ public:
     vec3 A;
     vec3 B;
     vec3 C;
+    vec3 normal;
     float color_ambient[3] = { 0, 0, 0 };
     float object_emission[3] = { 0, 0, 0 };
     float object_specular[3] = {0, 0, 0};
