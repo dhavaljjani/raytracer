@@ -10,7 +10,7 @@ void raytracer() {
 		for (float j = 0; j < width; j++) {
 			fprintf(stderr, "Completed %.1f%%\n\r", 100.0f * ((i * width) + j) / (width * height));
 			vec3 ray = RayThruPixel(centerinit, upinit, i + 0.5f, j + 0.5f);
-
+			//fprintf(stderr, "max-depth: %i\n", max_depth);
 			vec3 intensity = recursiveRay(ray, (eyeinit), 0);
 			
 			color.rgbRed = intensity[0] * (float)255.0;
@@ -123,7 +123,7 @@ vec3 recursiveRay(vec3 ray, vec3 p0, int depth) {
 				//Directional Light
 				shadow_ray_direction = normalize(lights[i].light_posn);
 				Intersection visibility = intersect(shadow_ray_direction, intersection.point + (shadow_ray_direction * shift));
-				if (visibility.hit) {
+				if (visibility.currentMin != INFINITY) {
 					//fprintf(stderr, "In the shadows! - directional light\n");
 					v = 0.0f;
 				}
@@ -146,16 +146,17 @@ vec3 recursiveRay(vec3 ray, vec3 p0, int depth) {
 			lighting_coeff *= v;
 
 			lighting_coeff *= L;
-
+			
 			colors += lighting_coeff;
 
 		}
 
 		vec3 rayDirection = vec3(normalize(ray));
 		vec3 reflected_direction = normalize(rayDirection - 2.0f * dot(rayDirection, intersection.normal) * intersection.normal);
-
+		
 		colors += (vec3(intersection.object_specular[0], intersection.object_specular[1], intersection.object_specular[2]) * recursiveRay(reflected_direction, intersection.point + (reflected_direction * shift), depth + 1));
 
+		//fprintf(stderr, "Colors: [%f][%f][%f]\n", colors[0], colors[1], colors[2]);
 		return colors;
 	}
 }
@@ -241,11 +242,8 @@ Intersection intersect(vec3 ray, vec3 p0) {
 			intersection.normal = normalize(cross(B - A, C - A));
 
 			float dot_product = dot(ray, intersection.normal);
-
-
 			if (dot_product > 0.0f) {
-				//fprintf(stderr, "scenario 1\n");
-				intersection.normal *= -1;
+				intersection.normal *= -1.0f;
 			}
 
 			intersection.point = vec3(triangles[k].transform * vec4(intersection.point, 1.0f));

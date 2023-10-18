@@ -192,7 +192,7 @@ void readfile(const char* filename)
                 int i;
                 float values[10];
                 bool validinput; // Validity of input 
-                max_depth = 4;
+                //max_depth = 4;
                 //fprintf(stderr, "COMMAND: %s\n", cmd);
                 // Process the light, add it to database.
                 // Lighting Command
@@ -390,6 +390,7 @@ void readfile(const char* filename)
                     }
                 }
                 else if (cmd == "maxdepth") {
+                    fprintf(stderr, "This shit is heppeneing\n");
                     max_depth = 5;
                 }
                 else {
