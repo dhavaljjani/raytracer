@@ -390,7 +390,6 @@ void readfile(const char* filename)
                     }
                 }
                 else if (cmd == "maxdepth") {
-                    fprintf(stderr, "This shit is heppeneing\n");
                     max_depth = 5;
                 }
                 else {

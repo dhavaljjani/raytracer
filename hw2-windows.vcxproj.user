@@ -7,6 +7,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LocalDebuggerCommand>$(TargetPath)</LocalDebuggerCommand>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>lamp_converted.test</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>airboat_converted.test</LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>
