@@ -85,7 +85,7 @@ In order to give my raytracer more functionality, I wrote a python script that c
 
 ![Rendering of a space shuttle](https://github.com/dhavaljjani/raytracer/blob/main/shuttle_converted_initial.png)
 
-![Rendering of a teapot](https://github.com/dhavaljjani/raytracer/blob/main/teapot_converted_initial.png)
+![Rendering of a teapot](https://github.com/dhavaljjani/raytracer/blob/main/teapot_converted.png)
 
 ![Rendering of a teddy bear](https://github.com/dhavaljjani/raytracer/blob/main/teddy_converted_initial.png)
 
