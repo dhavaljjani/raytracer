@@ -81,14 +81,19 @@ Rendering of a UFO:
 
 In order to give my raytracer more functionality, I wrote a python script that converts .obj files into the .test files that this raytracer uses as input. Every face is assigned a random color, and the object is created and rendered. **In Progress** Here are some examples:
 
-![Rendering of cessna](https://github.com/dhavaljjani/raytracer/blob/main/cessna_converted.png)
+![Rendering of cessna](https://github.com/dhavaljjani/raytracer/blob/main/cessna_converted_initial.png)
+
+![Rendering of a space shuttle](https://github.com/dhavaljjani/raytracer/blob/main/shuttle_converted_initial.png)
+
+![Rendering of a teapot](https://github.com/dhavaljjani/raytracer/blob/main/teapot_converted_initial.png)
+
+![Rendering of a teddy bear](https://github.com/dhavaljjani/raytracer/blob/main/teddy_converted_initial.png)
+
+![Rendering of a airboat](https://github.com/dhavaljjani/raytracer/blob/main/airboat_converted_initial.png)
+
+Rendering with material colors:
 
 ![Rendering of a space shuttle](https://github.com/dhavaljjani/raytracer/blob/main/shuttle_converted.png)
 
-![Rendering of a teapot](https://github.com/dhavaljjani/raytracer/blob/main/teapot_converted.png)
-
-![Rendering of a teddy bear](https://github.com/dhavaljjani/raytracer/blob/main/teddy_converted.png)
-
-![Rendering of a airboat](https://github.com/dhavaljjani/raytracer/blob/main/airboat_converted.png)
-
+![Rendering of cessna](https://github.com/dhavaljjani/raytracer/blob/main/cessna_converted.png)
 
