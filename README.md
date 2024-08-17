@@ -97,3 +97,23 @@ Rendering with material colors:
 
 ![Rendering of cessna](https://github.com/dhavaljjani/raytracer/blob/main/cessna_converted.png)
 
+Trying to render Mt Everest from obj with over 32000 vertices (in improving stages):
+
+![](https://github.com/dhavaljjani/raytracer/blob/main/everest_renders/Mount_Everest_converted(1).png)
+
+![](https://github.com/dhavaljjani/raytracer/blob/main/everest_renders/Mount_Everest_converted(2).png)
+
+![](https://github.com/dhavaljjani/raytracer/blob/main/everest_renders/Mount_Everest_converted(3).png)
+
+![](https://github.com/dhavaljjani/raytracer/blob/main/everest_renders/Mount_Everest_converted(4).png)
+
+![](https://github.com/dhavaljjani/raytracer/blob/main/everest_renders/Mount_Everest_converted(5).png)
+
+![](https://github.com/dhavaljjani/raytracer/blob/main/everest_renders/Mount_Everest_converted(6).png)
+
+![](https://github.com/dhavaljjani/raytracer/blob/main/everest_renders/Mount_Everest_converted(7).png)
+
+![](https://github.com/dhavaljjani/raytracer/blob/main/everest_renders/Mount_Everest_converted.png)
+
+
+
