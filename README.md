@@ -115,5 +115,6 @@ Trying to render Mt Everest from obj with over 32000 vertices (in improving stag
 
 ![](https://github.com/dhavaljjani/raytracer/blob/main/everest_renders/Mount_Everest_converted.png)
 
+## Future research interests
 
-
+One avenue for potential research that I would be interested in related to this raytracer is a voxel-based lighting system. Imagine a 3D voxel system where there are infinitisemly small cubes, each with a discrete lighting value. These values act together relationally, but the objects in the system would still be modeled by vectors, not discretely like the lighting.
